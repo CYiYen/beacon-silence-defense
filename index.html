@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>身體作為訊息的物質前提 — 口試簡報</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Noto+Sans+TC:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050505;
+    --ink:#ededed;
+    --muted:#8c8c8c;
+    --faint:#555555;
+    --laser:#cfcfcf;
+    --laser-soft:rgba(255,255,255,.12);
+    --serif:"Jost","Noto Sans TC",sans-serif;
+    --latin:"Jost",sans-serif;
+    --sans:"Noto Sans TC",system-ui,sans-serif;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:var(--sans);font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .deck{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+
+  .slide{
+    position:relative;min-height:100vh;width:100%;
+    scroll-snap-align:start;scroll-snap-stop:always;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:clamp(2rem,7vw,7rem);
+    overflow:hidden;
+  }
+  .wrap{max-width:min(92vw,1360px);width:100%;margin:0 auto;transform:translateY(-30px)}
+
+  /* cinematic overlays */
+  .vignette{position:fixed;inset:0;pointer-events:none;z-index:40;
+    background:radial-gradient(120% 90% at 50% 50%,transparent 55%,rgba(0,0,0,.55) 100%)}
+  .letterbox{position:fixed;left:0;right:0;height:5.5vh;z-index:41;pointer-events:none;background:#000;opacity:.9}
+  .letterbox.top{top:0}.letterbox.bot{bottom:0}
+  .grain{position:fixed;inset:-50%;z-index:42;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 1.2s steps(4) infinite}
+  @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-2%)}75%{transform:translate(-2%,-3%)}100%{transform:translate(2%,3%)}}
+
+  /* chapter label */
+  .chapter{font-family:var(--latin);letter-spacing:.42em;text-transform:uppercase;
+    font-size:12px;color:var(--muted);margin-bottom:2.4rem;font-weight:300}
+  .chapter .num{color:var(--faint)}
+
+  h1{font-family:var(--serif);font-weight:200;line-height:1.22;
+    font-size:clamp(2.2rem,6vw,5rem);letter-spacing:.16em}
+  h2{font-family:var(--serif);font-weight:300;line-height:1.32;
+    font-size:clamp(1.7rem,4vw,2.9rem);letter-spacing:.12em}
+  .lead{font-family:var(--serif);font-weight:300;line-height:1.6;
+    font-size:clamp(1.3rem,2.6vw,2.1rem);color:var(--ink);letter-spacing:.1em}
+  .en{font-family:var(--latin);font-weight:300;text-transform:uppercase;
+    font-size:clamp(.82rem,1.6vw,1.15rem);color:var(--muted);letter-spacing:.3em}
+  p.body{font-size:clamp(1rem,1.5vw,1.18rem);line-height:1.9;color:var(--muted);
+    font-weight:300;max-width:48ch}
+  .accent{color:var(--laser)}
+  .dim{color:var(--faint)}
+
+  /* reveal animation */
+  .r{opacity:0;transform:translateY(28px);filter:blur(6px);
+    transition:opacity 1.1s var(--ease),transform 1.1s var(--ease),filter 1.1s var(--ease)}
+  .slide.active .r{opacity:1;transform:none;filter:none}
+  .slide.active .r:nth-child(2){transition-delay:.12s}
+  .slide.active .r:nth-child(3){transition-delay:.26s}
+  .slide.active .r:nth-child(4){transition-delay:.4s}
+  .slide.active .r:nth-child(5){transition-delay:.54s}
+  .slide.active .r:nth-child(6){transition-delay:.68s}
+
+  /* hero */
+  #hero{align-items:center;text-align:center}
+  .kicker{font-family:var(--sans);letter-spacing:.36em;font-size:12px;color:var(--muted);
+    text-transform:uppercase;margin-bottom:3rem;font-weight:300}
+  .hero-beam{height:1px;width:0;margin:2.4rem auto;background:var(--laser);
+    box-shadow:0 0 12px 1px var(--laser),0 0 40px 4px var(--laser-soft);
+    transition:width 2.4s var(--ease) .6s}
+  #hero.active .hero-beam{width:min(62%,560px)}
+  .hero-bg{position:absolute;inset:0;z-index:0;background:#000 center/cover no-repeat;background-image:url("img/00.jpg");opacity:.42}
+  .hero-bg-ov{position:absolute;inset:0;z-index:0;background:radial-gradient(120% 95% at 50% 45%,rgba(5,5,5,.35),rgba(5,5,5,.88))}
+  #hero .wrap{position:relative;z-index:1}
+  .meta{font-family:var(--sans);font-size:14px;color:var(--muted);letter-spacing:.12em;margin-top:.6rem;font-weight:300}
+  .scroll-hint{position:absolute;bottom:9vh;left:50%;transform:translateX(-50%);
+    font-size:11px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;
+    display:flex;flex-direction:column;align-items:center;gap:.8rem}
+  .scroll-hint .ln{width:1px;height:34px;background:linear-gradient(var(--faint),transparent);animation:drift 2.2s ease-in-out infinite}
+  @keyframes drift{0%,100%{opacity:.3;transform:scaleY(.7)}50%{opacity:1;transform:scaleY(1)}}
+
+  /* three axes */
+  .axes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,4vw,3rem);margin-top:1rem}
+  .axis{border-top:1px solid rgba(255,255,255,.2);padding-top:1.4rem}
+  .axis .big{font-family:var(--serif);font-size:clamp(1.8rem,3.6vw,2.8rem);margin-bottom:.7rem}
+  .axis .sub{font-size:13px;letter-spacing:.16em;color:var(--muted)}
+  .axis-cite{margin-top:.7rem;padding-top:.6rem;border-top:1px solid rgba(255,255,255,.08);font-family:var(--latin);font-size:11px;letter-spacing:.06em;color:var(--faint)}
+  .cite{font-family:var(--sans);font-weight:300;font-size:clamp(.8rem,1.35vw,.98rem);color:var(--muted);letter-spacing:.03em;line-height:1.85;max-width:54ch}
+  .cite-list{list-style:none;margin:1.1rem 0;padding:0;max-width:56ch}
+  .cite-list li{position:relative;padding-left:1.4rem;margin:.6rem 0;font-family:var(--sans);font-weight:300;font-size:clamp(.86rem,1.4vw,1.04rem);color:var(--ink);letter-spacing:.03em;line-height:1.6}
+  .cite-list li::before{content:'';position:absolute;left:0;top:.72em;width:8px;height:1px;background:var(--muted)}
+  .cite-list .src{font-family:var(--latin);font-size:.82em;color:var(--faint);letter-spacing:.06em;white-space:nowrap}
+  .map{display:flex;flex-direction:column;gap:1rem;margin-top:1.4rem;max-width:880px}
+  .map-row{display:grid;grid-template-columns:3.4em auto 1fr;align-items:center;gap:clamp(.8rem,2vw,1.6rem);border-top:1px solid rgba(255,255,255,.12);padding-top:1rem}
+  .map-axis{font-family:var(--serif);font-weight:300;font-size:clamp(1.4rem,3vw,2.1rem);letter-spacing:.08em;line-height:1.1}
+  .map-axis small{display:block;font-family:var(--latin);font-size:10px;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:.25rem}
+  .map-arrow{color:var(--faint);font-size:18px}
+  .map-work{font-family:var(--latin);font-size:clamp(1rem,1.8vw,1.3rem);color:var(--ink);letter-spacing:.04em}
+  .map-pt{font-family:var(--sans);font-weight:300;font-size:clamp(.82rem,1.3vw,.98rem);color:var(--muted);line-height:1.65;margin-top:.3rem;letter-spacing:.03em;max-width:46ch}
+  @media(max-width:680px){.map-row{grid-template-columns:1fr;gap:.4rem}.map-arrow{display:none}}
+  .quad{display:block;width:100%;max-width:520px;height:auto;margin:1.3rem 0 .4rem}
+  .quad .ql{fill:var(--ink);font-family:var(--sans);font-weight:300;font-size:14px;letter-spacing:.02em}
+  .quad .qs{fill:var(--muted);font-family:var(--sans);font-weight:300;font-size:11px}
+  .quad .qax{fill:var(--faint);font-family:var(--sans);font-weight:300;font-size:12px;letter-spacing:.08em}
+  .venn{display:block;width:100%;max-width:440px;height:auto;margin:.9rem 0 .3rem}
+  .venn .vn{fill:var(--ink);font-family:var(--sans);font-weight:300;font-size:15px;letter-spacing:.08em}
+  .venn .vw{fill:var(--ink);font-family:var(--sans);font-weight:300;font-size:12.5px}
+  .venn .vs{fill:var(--muted);font-family:var(--sans);font-weight:300;font-size:10.5px}
+  .venn .vc{fill:#fff;font-family:var(--sans);font-weight:400;font-size:13px;letter-spacing:.1em}
+  .lifi-dia{display:block;width:100%;max-width:540px;height:auto;margin:1.6rem 0}
+  .lifi-dia .dl{fill:var(--ink);font-family:var(--sans);font-weight:300;font-size:13px;letter-spacing:.04em}
+  .lifi-dia .ds{fill:var(--muted);font-family:var(--sans);font-weight:300;font-size:11px}
+  .circuit{display:block;width:100%;max-width:800px;height:auto;margin:1.4rem 0}
+  .circuit .cl{fill:var(--ink);font-family:var(--sans);font-weight:300;font-size:12px}
+  .circuit .cs{fill:var(--muted);font-family:var(--sans);font-weight:300;font-size:10px}
+  .posdia{display:block;width:100%;max-width:640px;height:auto;margin:1.5rem 0 .3rem}
+  .posdia .pl{fill:var(--ink);font-family:var(--sans);font-weight:300;font-size:13px}
+  .posdia .ps{fill:var(--muted);font-family:var(--sans);font-weight:300;font-size:10.5px}
+  .posdia .pt{fill:var(--faint);font-family:var(--latin);text-transform:uppercase;letter-spacing:.18em;font-size:10px}
+  .two-col{display:grid;grid-template-columns:0.82fr 1.18fr;gap:clamp(1.6rem,4vw,4rem);align-items:center;width:100%}
+  .tc-right .posdia{max-width:100%;margin:0}
+  @media(max-width:820px){.two-col{grid-template-columns:1fr;gap:1.4rem}}
+  .gal2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:1.3rem 0;max-width:860px}
+  .gal2 img{width:100%;height:min(44vh,330px);object-fit:cover;border-radius:8px;border:0.5px solid rgba(255,255,255,.12);display:block}
+  @media(max-width:640px){.gal2{grid-template-columns:1fr}}
+  .band{position:relative;width:100%;max-width:960px;height:min(38vh,290px);margin:1rem auto 1.6rem}
+  .band img{position:absolute;top:50%;transform:translateY(-50%);object-fit:cover;filter:grayscale(1) brightness(.88);border:0.5px solid rgba(255,255,255,.1)}
+  .band img:nth-child(2){left:1%;width:25%;height:60%;opacity:.82;z-index:1}
+  .band img:nth-child(3){left:20%;width:29%;height:84%;z-index:3}
+  .band img:nth-child(4){left:45%;width:25%;height:54%;opacity:.72;z-index:2}
+  .band img:nth-child(5){left:64%;width:31%;height:78%;z-index:4}
+  .band .axis{position:absolute;left:50%;top:-4%;height:108%;width:1px;background:rgba(255,255,255,.18);z-index:5}
+  .band .lt,.band .lb{position:absolute;left:50%;transform:translateX(-50%);font-family:var(--latin);text-transform:uppercase;letter-spacing:.24em;font-size:12px;color:var(--muted);white-space:nowrap;z-index:5}
+  body.proj .band .lt,body.proj .band .lb{font-size:17px;color:#e8e8e8;letter-spacing:.3em}
+  .band .lt{top:-9%}.band .lb{bottom:-9%}
+  #conclusion .wrap{text-align:center;max-width:1000px}
+  .cs-canvas{display:block;width:100%;max-width:480px;height:auto;border:0.5px solid rgba(255,255,255,.1);border-radius:6px}
+  .silence-dia{display:block;width:100%;max-width:480px;height:auto}
+  .silence-dia .sl{fill:var(--ink);font-family:var(--sans);font-weight:300;font-size:12px}
+  .silence-dia .ss{fill:var(--muted);font-family:var(--sans);font-weight:300;font-size:10px}
+  .silence-dia .st{fill:var(--faint);font-family:var(--latin);text-transform:uppercase;letter-spacing:.16em;font-size:9px}
+  @media(max-width:720px){.axes{grid-template-columns:1fr;gap:1.4rem}}
+
+  /* progression */
+  .prog{display:flex;align-items:center;gap:clamp(.6rem,2vw,1.8rem);flex-wrap:wrap;margin-top:1rem}
+  .prog .step{font-family:var(--serif);font-size:clamp(1.3rem,2.6vw,2.1rem)}
+  .prog .step.now{color:var(--laser)}
+  .prog .arr{color:var(--faint)}
+
+  /* signal chain */
+  .chain{display:flex;align-items:center;gap:clamp(.4rem,1.4vw,1rem);flex-wrap:wrap;margin:1.6rem 0}
+  .node{border:1px solid rgba(255,255,255,.14);border-radius:3px;padding:.7rem 1.1rem;font-size:14px;letter-spacing:.06em;color:var(--ink)}
+  .chain .arr{color:var(--laser);font-size:18px}
+  .forms{font-family:var(--latin);font-style:italic;color:var(--muted);font-size:clamp(1rem,2vw,1.5rem);letter-spacing:.08em}
+
+  /* quotes */
+  .q{border-left:1px solid rgba(255,255,255,.3);padding-left:1.6rem;margin:1.6rem 0}
+  .q .txt{font-family:var(--serif);font-weight:300;font-size:clamp(1.2rem,2.4vw,1.9rem);line-height:1.5}
+  .q .who{font-family:var(--latin);font-style:italic;color:var(--laser);margin-top:.8rem;font-size:1.05rem}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.4vw,1rem);margin-top:1.2rem}
+  th,td{text-align:left;padding:.85rem .6rem;border-bottom:1px solid rgba(255,255,255,.08);font-weight:300;vertical-align:top}
+  th{color:var(--laser);letter-spacing:.1em;font-size:12px;text-transform:uppercase}
+  td:first-child{color:var(--muted)}
+  .work{font-family:var(--latin);font-style:normal;letter-spacing:.08em}
+
+  /* demo */
+  #demo .wrap{max-width:900px}
+  .demo-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:.9rem}
+  .demo-bar button{background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,.2);
+    border-radius:3px;padding:.5rem .9rem;font-family:var(--sans);font-size:13px;letter-spacing:.05em;
+    cursor:pointer;display:inline-flex;gap:6px;align-items:center;transition:.2s}
+  .demo-bar button:hover{border-color:var(--laser);color:var(--laser)}
+  #bs-status{margin-left:auto;font-size:13px;color:var(--muted);letter-spacing:.06em}
+  #bs-canvas{display:block;width:min(100%,86vh);height:auto;margin:0 auto;border:1px solid rgba(255,255,255,.1);border-radius:6px;touch-action:none;cursor:grab}
+  .chrow{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:.9rem}
+  .ch{border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:9px 5px 11px;text-align:center;font-size:12px;line-height:1.5;color:var(--muted);transition:.15s}
+  .ch b{display:block;color:var(--ink);font-weight:500;margin-bottom:3px}
+  .hint-sm{font-size:13px;color:var(--faint);letter-spacing:.06em;margin-top:.4rem}
+
+  /* nav dots */
+  .dots{position:fixed;right:2.4vw;top:50%;transform:translateY(-50%);z-index:50;
+    display:flex;flex-direction:column;gap:11px}
+  .dots b{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.22);cursor:pointer;
+    border:none;padding:0;transition:.3s;display:block}
+  .dots b.on{background:var(--laser);box-shadow:0 0 8px var(--laser);transform:scale(1.3)}
+  .pbar{position:fixed;top:0;left:0;height:2px;background:var(--laser);z-index:60;width:0;
+    box-shadow:0 0 8px var(--laser);transition:width .3s linear}
+  @media(max-width:720px){.dots{display:none}.letterbox{height:3.5vh}}
+
+  .end{text-align:center;align-items:center}
+  .end h1{margin-bottom:1.4rem}
+
+  /* axis signal-flow animation */
+  .axis-flow{position:relative;height:30px;margin:3rem auto 0;max-width:680px}
+  .af-line{position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.18)}
+  .af-node{position:absolute;top:50%;width:7px;height:7px;border-radius:50%;background:#777;transform:translate(-50%,-50%)}
+  .af-pulse{position:absolute;top:50%;left:0;width:9px;height:9px;border-radius:50%;background:#fff;
+    box-shadow:0 0 14px 2px rgba(255,255,255,.7);transform:translate(-50%,-50%);animation:afflow 3.6s linear infinite}
+  @keyframes afflow{0%{left:0;opacity:0}7%{opacity:1}93%{opacity:1}100%{left:100%;opacity:0}}
+
+  /* li-fi line-of-sight animation */
+  .lifi-scene{position:relative;height:84px;max-width:680px;margin:2.6rem auto 0}
+  .lf-line{position:absolute;top:50%;left:6%;right:50%;height:1px;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.45)}
+  .lf-cut{position:absolute;top:50%;left:50%;right:6%;height:1px;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.45);animation:lfcut 4s ease-in-out infinite}
+  .lf-emit{position:absolute;top:50%;left:6%;width:6px;height:11px;background:#d8d8d8;transform:translate(-50%,-50%)}
+  .lf-recv{position:absolute;top:50%;right:6%;width:6px;height:11px;transform:translate(50%,-50%);background:#d8d8d8;animation:lfrecv 4s ease-in-out infinite}
+  .lf-body{position:absolute;left:50%;top:50%;width:16px;height:48px;border-radius:8px;background:#0c0c0c;border:1px solid rgba(255,255,255,.55);animation:lfbody 4s ease-in-out infinite}
+  @keyframes lfcut{0%,28%{opacity:1}44%,74%{opacity:.05}90%,100%{opacity:1}}
+  @keyframes lfrecv{0%,28%{background:#d8d8d8}44%,74%{background:#3a3a3a}90%,100%{background:#d8d8d8}}
+  @keyframes lfbody{0%,18%{transform:translate(-50%,42px);opacity:0}30%{opacity:1}42%,72%{transform:translate(-50%,-50%);opacity:1}86%,100%{transform:translate(-50%,42px);opacity:0}}
+
+  /* failure / silence animation */
+  .fail-flow{position:relative;height:34px;max-width:680px;margin:2.4rem auto 0}
+  .ff-line{position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.16)}
+  .ff-pulse{position:absolute;top:50%;left:0;width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 14px 2px rgba(255,255,255,.7);transform:translate(-50%,-50%);animation:ffpulse 4s linear infinite}
+  .ff-silence{position:absolute;top:50%;left:62%;transform:translateY(-50%);font-family:var(--latin);text-transform:uppercase;letter-spacing:.3em;font-size:11px;color:var(--muted);opacity:0;animation:ffsil 4s ease-in-out infinite}
+  @keyframes ffpulse{0%{left:0;opacity:0}8%{opacity:1}46%{left:52%;opacity:1}54%{left:55%;opacity:0}100%{left:55%;opacity:0}}
+  @keyframes ffsil{0%,54%{opacity:0}70%,90%{opacity:.65}100%{opacity:0}}
+
+  /* solitude background video */
+  .slide-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.03) brightness(.78);transition:filter 1.2s ease;z-index:0}
+  .slide-video.color{filter:grayscale(0) saturate(1.75) contrast(1.06) brightness(.86)}
+  .slide-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}
+  .va-split{display:grid;grid-template-columns:1fr auto;gap:clamp(2rem,5vw,5rem);align-items:center}
+  .va-split img,.va-split video{height:min(70vh,600px);width:auto;max-width:100%;border-radius:8px;border:.5px solid rgba(255,255,255,.14);display:block;object-fit:cover}
+  @media(max-width:760px){.va-split{grid-template-columns:1fr}.va-split img,.va-split video{height:auto;width:100%;max-height:44vh}}
+  .sol-endimg{position:absolute;inset:0;z-index:0;background:#050505 center/cover no-repeat;background-image:url("img/solitude-end.jpg");background-position:center calc(50% + 40px);opacity:0;transition:opacity .9s ease}
+  .slide-video-overlay{position:absolute;inset:0;z-index:0;background:linear-gradient(90deg,rgba(5,5,5,.86) 0%,rgba(5,5,5,.5) 55%,rgba(5,5,5,.32) 100%)}
+  .sol-black{position:absolute;inset:0;z-index:0;background:#000;opacity:0;transition:opacity .6s ease;pointer-events:none}
+  #solitude .wrap{position:relative;z-index:1}
+  #papershell .slide-video{filter:grayscale(1) contrast(1.03) brightness(.72)}
+  #papershell .slide-video.color{filter:grayscale(0) contrast(1.04) brightness(.8)}
+  #papershell .wrap{position:relative;z-index:1}
+  .ps-endimg{position:absolute;inset:0;z-index:0;opacity:0;transition:opacity .9s ease;
+    background-color:#050505;background-image:url("img/08-poster.jpg");background-repeat:no-repeat;
+    background-position:right 7% center;background-size:auto min(58vh,440px)}
+
+  /* video scrub bar (toggle with S) */
+  #scrub{position:fixed;left:0;right:0;bottom:0;height:5px;background:rgba(255,255,255,.16);z-index:96;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .25s,height .2s}
+  #scrub.show{opacity:1;pointer-events:auto;height:9px}
+  #scrub-fill{height:100%;width:0;background:#fff}
+
+  /* technical chain — sequential node glow */
+  .chain.anim .node{animation:nodeglow 4.4s ease-in-out infinite}
+  .chain.anim .node:nth-child(1){animation-delay:0s}
+  .chain.anim .node:nth-child(3){animation-delay:.5s}
+  .chain.anim .node:nth-child(5){animation-delay:1s}
+  .chain.anim .node:nth-child(7){animation-delay:1.5s}
+  @keyframes nodeglow{0%,100%{border-color:rgba(255,255,255,.14);color:var(--ink);box-shadow:none}11%{border-color:#fff;color:#fff;box-shadow:0 0 16px rgba(255,255,255,.22)}30%{border-color:rgba(255,255,255,.14);color:var(--ink);box-shadow:none}}
+
+  /* progression — sequential word highlight */
+  .slide.active .prog.anim .step{animation-name:progpulse;animation-duration:4.8s;animation-timing-function:ease-in-out;animation-iteration-count:1;animation-fill-mode:backwards}
+  .prog.anim .step:nth-child(1){animation-delay:0s}
+  .prog.anim .step:nth-child(3){animation-delay:.55s}
+  .prog.anim .step:nth-child(5){animation-delay:1.1s}
+  @keyframes progpulse{0%,100%{color:var(--faint)}12%{color:#fff}38%{color:var(--ink)}86%{color:var(--ink)}}
+
+  /* research framework diagram */
+  #framework{padding:clamp(.9rem,3vw,2.2rem)}
+  #framework .wrap{max-width:940px}
+  .fw{display:flex;flex-direction:column;gap:.35rem;margin-top:.3rem}
+  .fw-layer{border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.5rem .8rem .6rem}
+  .fw-tag{display:block;font-family:var(--latin);text-transform:uppercase;letter-spacing:.24em;font-size:10px;color:var(--muted);margin-bottom:.55rem}
+  .fw-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem}
+  .fw-row.two{grid-template-columns:1fr 1fr}
+  .fw-row.three{grid-template-columns:repeat(3,1fr)}
+  .fw-box{border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:.5rem .6rem;
+    font-size:clamp(.76rem,1.3vw,.92rem);color:var(--ink);letter-spacing:.03em;display:flex;flex-direction:column;gap:.18rem;cursor:pointer;transition:border-color .15s,background .15s}
+  .fw-box small{color:var(--muted);font-size:.74em;letter-spacing:.02em}
+  .fw-box.core{border-color:rgba(255,255,255,.55)}
+  .fw-box:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.04)}
+  .fw-box.active{border-color:#fff;background:rgba(255,255,255,.07)}
+  #fw-note{position:absolute;z-index:45;left:50%;bottom:calc(5.5vh + 22px);transform:translate(-50%,8px);width:min(86%,720px);background:#121212;border:1px solid rgba(255,255,255,.28);border-radius:8px;padding:.8rem 1.1rem;font-family:var(--sans);font-weight:300;font-size:13.5px;line-height:1.65;color:var(--ink);letter-spacing:.02em;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;box-shadow:0 10px 34px rgba(0,0,0,.55)}
+  #fw-note.show{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+  .fw-arrow{text-align:center;color:var(--faint);font-size:13px;line-height:1}
+  @media(max-width:720px){.fw-row,.fw-row.three{grid-template-columns:1fr 1fr}}
+
+  /* spherical overview hub */
+  #hub{position:fixed;inset:0;z-index:80;overflow:hidden;perspective:1100px;perspective-origin:50% 50%;
+    background:radial-gradient(120% 100% at 50% 45%,#101010 0%,#050505 72%);transition:opacity .55s var(--ease)}
+  #hub.hidden{opacity:0;pointer-events:none}
+  #hub.hidden .hub-card,#hub.hidden #sphere-wrap{pointer-events:none!important}
+  .hub-top{position:absolute;top:0;left:0;right:0;z-index:6;display:flex;justify-content:space-between;align-items:flex-start;
+    padding:clamp(16px,2.5vw,30px) clamp(20px,3vw,42px);pointer-events:none}
+  .hub-brand{font-family:var(--sans);font-weight:300;font-size:clamp(.95rem,1.7vw,1.25rem);color:var(--ink);letter-spacing:.14em;line-height:1.5}
+  .hub-brand small{display:block;font-family:var(--latin);text-transform:uppercase;font-size:10px;letter-spacing:.26em;color:var(--muted);margin-top:.35rem}
+  .hub-meta{font-family:var(--latin);font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;white-space:nowrap}
+  #sphere-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transform-style:preserve-3d;
+    width:min(80vw,72vh,680px);height:min(80vw,72vh,680px);cursor:pointer;touch-action:none}
+  #sphere{position:absolute;inset:0;transform-style:preserve-3d}
+  .hub-card{position:absolute;left:50%;top:50%;width:156px;height:98px;margin:-49px 0 0 -78px;
+    background:#101010 center/cover no-repeat;border-radius:3px;
+    display:flex;flex-direction:column;justify-content:flex-end;padding:9px 11px;cursor:pointer;
+    overflow:hidden;backface-visibility:hidden;transition:filter .25s}
+  .hub-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.12) 45%,rgba(0,0,0,0) 75%)}
+  .hub-card:hover{filter:brightness(1.3)}
+  .hub-card .cp{position:absolute;top:8px;left:11px;z-index:1;font-family:var(--latin);font-size:11px;letter-spacing:.14em;color:var(--ink);opacity:.55}
+  .hub-card .ct{display:none}
+  .hub-card .cn{position:relative;z-index:1;font-family:var(--sans);color:var(--ink);font-size:12px;font-weight:300;line-height:1.25;letter-spacing:.03em;overflow:hidden}
+  .hub-hint{position:absolute;z-index:45;bottom:calc(5.5vh + 18px);left:0;right:0;text-align:center;font-size:11px;letter-spacing:.28em;color:var(--faint);text-transform:uppercase;pointer-events:none}
+  #hub-pop{position:fixed;z-index:92;width:300px;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.88);transition:opacity .22s var(--ease),transform .22s var(--ease)}
+  #hub-pop.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  #hub-pop .pimg{width:100%;height:188px;background:#101010 center/cover no-repeat;border:1px solid rgba(255,255,255,.32);border-radius:8px;box-shadow:0 24px 70px rgba(0,0,0,.7)}
+  #hub-pop .pcap{margin-top:9px;text-align:center}
+  #hub-pop .pn{font-family:var(--latin);font-size:11px;letter-spacing:.18em;color:var(--muted)}
+  #hub-pop .pt{font-family:var(--sans);font-weight:300;font-size:14px;color:var(--ink);letter-spacing:.05em;margin-top:2px}
+  #to-hub{position:fixed;top:calc(5.5vh + 16px);left:22px;z-index:95;background:rgba(22,22,22,.9);
+    border:1px solid rgba(255,255,255,.32);color:var(--ink);border-radius:30px;padding:.46rem 1rem;
+    font-family:var(--sans);font-size:12px;letter-spacing:.14em;cursor:pointer;display:none}
+  #to-hub:hover{border-color:#fff;background:rgba(40,40,40,.95)}
+  body.in-deck #to-hub{display:inline-block}
+  #pageno{position:fixed;right:3vw;bottom:calc(5.5vh + 16px);z-index:60;display:none;
+    font-family:var(--latin);font-size:12px;letter-spacing:.22em;color:var(--muted)}
+  body.in-deck #pageno{display:block}
+  @keyframes deckin{from{opacity:0;transform:scale(.965)}to{opacity:1;transform:none}}
+  #deck.enter{animation:deckin .7s var(--ease)}
+
+  #morph{position:fixed;z-index:90;display:none;flex-direction:column;justify-content:flex-end;
+    padding:0 8vw 12vh;background:#0a110b center/cover no-repeat;border:1px solid rgba(255,255,255,.2);overflow:hidden}
+  #morph::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(6,9,7,.9) 10%,rgba(6,9,7,.4) 60%,rgba(6,9,7,.12))}
+  #morph.show{display:flex}
+  #morph .m-inner{position:relative;z-index:1;opacity:0;transition:opacity .5s var(--ease) .15s}
+  #morph.grow .m-inner{opacity:1}
+  #morph .m-ct{font-family:var(--latin);font-style:italic;color:var(--laser);font-size:14px;letter-spacing:.12em}
+  #morph .m-cn{font-family:var(--serif);color:var(--ink);font-size:clamp(1.4rem,5vw,3.4rem);margin-top:.5rem;line-height:1.15}
+
+  /* ── 投影高對比模式（按 B 切換，設定會記住）：字加大加粗全亮、圖表線條加亮、關掉壓暗層 ── */
+  body.proj{--ink:#ffffff;--muted:#e3e3e3;--faint:#c6c6c6;--laser:#ffffff;font-weight:400}
+  body.proj .vignette,body.proj .grain{display:none}
+  body.proj .chapter,body.proj .kicker,body.proj .en,body.proj .meta{font-weight:400}
+  body.proj h2{font-weight:400}
+  body.proj p.body{font-weight:400;font-size:clamp(1.14rem,1.8vw,1.42rem)}
+  body.proj .cite{font-weight:400;font-size:clamp(.95rem,1.6vw,1.18rem)}
+  body.proj .cite-list li{font-weight:400;font-size:clamp(1rem,1.65vw,1.22rem)}
+  body.proj .lead,body.proj .q .txt{font-weight:400}
+  body.proj .map-pt{font-weight:400;font-size:clamp(.95rem,1.5vw,1.15rem)}
+  body.proj table{font-size:clamp(.9rem,1.6vw,1.15rem)}
+  body.proj th,body.proj td{font-weight:400;border-bottom-color:rgba(255,255,255,.28)}
+  body.proj .q{border-left-color:rgba(255,255,255,.6)}
+  body.proj .fw-box{border-color:rgba(255,255,255,.42)}
+  body.proj .ch{border-color:rgba(255,255,255,.32)}
+  body.proj .venn circle{stroke:rgba(255,255,255,.66)}
+  body.proj .lifi-dia rect,body.proj .lifi-dia line{stroke:rgba(255,255,255,.92)}
+  body.proj .circuit g{stroke:#ffffff}
+  body.proj .posdia rect,body.proj .posdia line,body.proj .posdia circle{stroke:rgba(255,255,255,.85)}
+  body.proj .silence-dia line{stroke:rgba(255,255,255,.48)}
+  body.proj .venn .vn{font-size:16px;font-weight:400}body.proj .venn .vw{font-size:13.5px;font-weight:400}body.proj .venn .vs{font-size:11.5px}
+  body.proj .circuit .cl{font-size:13px;font-weight:400}body.proj .circuit .cs{font-size:11px}
+  body.proj .lifi-dia .dl{font-size:14px;font-weight:400}body.proj .lifi-dia .ds{font-size:12px}
+  body.proj .posdia .pl{font-size:14px;font-weight:400}body.proj .posdia .ps{font-size:11.5px}body.proj .posdia .pt{font-size:11px}
+  body.proj .silence-dia .sl{font-size:13px;font-weight:400}body.proj .silence-dia .ss{font-size:11px}body.proj .silence-dia .st{font-size:10px}
+  body.proj .gal2 img{height:min(36vh,270px)}
+  /* proj 排版保護：字放大的同時壓縮垂直間距、限制圖表高度，避免內容超出一頁 */
+  body.proj .slide{padding-top:clamp(1.2rem,4vh,3rem);padding-bottom:clamp(1.8rem,8vh,5rem)}
+  body.proj .wrap{transform:translateY(-12px)}
+  body.proj .chapter{margin-bottom:1.2rem}
+  body.proj h2{font-size:clamp(1.55rem,3.4vw,2.5rem)}
+  body.proj .lead{font-size:clamp(1.2rem,2.3vw,1.8rem)}
+  body.proj .wrap p[style]{margin-top:1rem!important}
+  body.proj .wrap .lead[style]{margin-top:1.1rem!important}
+  body.proj .cite-list li{margin:.45rem 0}
+  body.proj .q{margin:1.2rem 0}
+  body.proj .map{gap:.7rem;margin-top:1rem}
+  body.proj .venn{max-width:min(420px,50vh)}
+  body.proj .silence-dia{max-width:min(460px,54vh)}
+  body.proj .lifi-dia{margin:1rem 0}
+  body.proj .circuit{margin:1rem 0}
+  body.proj .band{height:min(30vh,230px)}
+  body.proj table{margin-top:.8rem}
+  body.proj th,body.proj td{padding:.7rem .6rem}
+  body.proj .gal2{margin:.9rem 0}
+  body.proj .va-split img,body.proj .va-split video{height:min(58vh,500px)}
+  body.proj .demo-bar{margin-bottom:.6rem}
+  body.proj .chrow{margin-top:.6rem}
+  /* proj 滿版：拿掉上下黑條、內容撐滿螢幕、圖表同步放大 */
+  body.proj .letterbox{display:none}
+  body.proj #pageno{bottom:18px}
+  body.proj #fw-note{bottom:30px}
+  body.proj .hub-hint{bottom:24px}
+  body.proj .slide{padding:clamp(1.2rem,3.5vh,2.6rem) clamp(2rem,5vw,5rem)}
+  body.proj .wrap{max-width:min(94vw,1500px)}
+  body.proj .two-col{gap:clamp(2rem,5vw,5.5rem)}
+  body.proj .map{max-width:1100px}
+  body.proj .map-pt{max-width:56ch}
+  body.proj p.body{max-width:52ch}
+  body.proj .cite{max-width:60ch}
+  body.proj .venn{max-width:min(540px,56vh)}
+  body.proj .silence-dia{max-width:min(560px,58vh)}
+  body.proj .circuit{max-width:960px}
+  body.proj .lifi-dia{max-width:620px}
+  body.proj .gal2{max-width:1100px}
+  body.proj .gal2 img{height:min(42vh,330px)}
+  body.proj .band{height:min(34vh,300px);max-width:1100px}
+  body.proj #bs-canvas{width:min(100%,116vh)}
+  #demo .chapter,#demo .demo-bar,#demo .chrow{max-width:min(100%,86vh);margin-left:auto;margin-right:auto}
+  body.proj #demo .chapter,body.proj #demo .demo-bar,body.proj #demo .chrow{max-width:min(100%,116vh)}
+  body.proj .va-split img,body.proj .va-split video{height:min(62vh,560px)}
+  body.proj table{max-width:1100px}
+  /* proj 滿版：圖表放大填滿留空 */
+  body.proj .venn{max-width:min(760px,76vh);margin-left:auto;margin-right:auto}
+  body.proj .silence-dia{max-width:min(920px,80vh);margin-left:auto;margin-right:auto}
+  body.proj .lifi-dia{max-width:700px}
+  body.proj .circuit{max-width:1150px}
+  body.proj .posdia{max-width:100%}
+  body.proj .map{max-width:1250px}
+  /* proj 滿版：研究架構圖放大但收進一頁 */
+  body.proj #framework{padding-top:clamp(2.4rem,5vh,3.4rem);padding-bottom:clamp(4.6rem,10vh,6rem)}
+  body.proj #fw-note{bottom:12px}
+  body.proj #framework .wrap{max-width:min(96vw,1720px);transform:none}
+  body.proj .fw{gap:.45rem}
+  body.proj .fw-layer{padding:.6rem .95rem .7rem}
+  body.proj .fw-tag{font-size:11.5px;font-weight:400;margin-bottom:.5rem}
+  body.proj .fw-row{gap:.65rem}
+  body.proj .fw-box{padding:.6rem .8rem;font-size:clamp(.95rem,1.4vw,1.14rem);gap:.22rem}
+  body.proj .fw-arrow{font-size:13px;line-height:1}
+  /* proj 全域字級再放大（保留淡灰層次） */
+  body.proj .chapter{font-size:14px}
+  body.proj h2{font-size:clamp(1.7rem,3.8vw,2.9rem)}
+  body.proj .lead{font-size:clamp(1.35rem,2.5vw,2rem)}
+  body.proj p.body{font-size:clamp(1.25rem,2vw,1.6rem)}
+  body.proj .cite{font-size:clamp(1.05rem,1.75vw,1.35rem)}
+  body.proj .cite-list li{font-size:clamp(1.1rem,1.8vw,1.4rem)}
+  body.proj .q .txt{font-size:clamp(1.35rem,2.6vw,2.2rem)}
+  body.proj .q .who{font-size:1.15rem}
+  body.proj .en{font-size:clamp(.9rem,1.7vw,1.25rem)}
+  body.proj .meta{font-size:15.5px}
+  body.proj table{font-size:clamp(1rem,1.75vw,1.35rem)}
+  body.proj .map-axis{font-size:clamp(1.6rem,3.2vw,2.4rem)}
+  body.proj .map-work{font-size:clamp(1.15rem,2vw,1.5rem)}
+  body.proj .map-pt{font-size:clamp(1.05rem,1.7vw,1.3rem)}
+  body.proj .ch{font-size:14px}
+  body.proj .demo-bar button{font-size:16px}
+  body.proj #bs-status{font-size:16px}
+  body.proj .venn .vn{font-size:18px}body.proj .venn .vw{font-size:15px}body.proj .venn .vs{font-size:12.5px}body.proj .venn .vc{font-size:15px}
+  body.proj .circuit .cl{font-size:14.5px}body.proj .circuit .cs{font-size:12px}
+  body.proj .lifi-dia .dl{font-size:16px}body.proj .lifi-dia .ds{font-size:13.5px}
+  body.proj .posdia .pl{font-size:16px}body.proj .posdia .ps{font-size:13px}body.proj .posdia .pt{font-size:12px}
+  body.proj .silence-dia .sl{font-size:15px}body.proj .silence-dia .ss{font-size:12.5px}body.proj .silence-dia .st{font-size:11px}
+</style>
+</head>
+<body class="proj">
+
+
+
+
+<div class="grain"></div>
+<div class="vignette"></div>
+<div class="letterbox top"></div>
+<div class="letterbox bot"></div>
+<div class="pbar" id="pbar"></div>
+<div class="dots" id="dots"></div>
+<div id="pageno"></div>
+
+<div id="scrub"><div id="scrub-fill"></div></div>
+
+<div id="hub">
+  <div class="hub-top">
+    <div class="hub-brand">身體作為訊息的物質前提<small>The Body as the Material Precondition of the Message</small></div>
+    <div class="hub-meta">陳羿言 · 2026</div>
+  </div>
+  <div id="sphere-wrap"><div id="sphere"></div></div>
+  <div id="hub-pop"><div class="pimg"></div><div class="pcap"><div class="pn"></div><div class="pt"></div></div></div>
+</div>
+
+<div id="morph"><div class="m-inner"><div class="m-ct"></div><div class="m-cn"></div></div></div>
+
+<main class="deck" id="deck">
+
+  <!-- 00 HERO -->
+  <section class="slide" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-bg-ov"></div>
+    <div class="wrap">
+      <div class="kicker r">國立清華大學 · 科技藝術研究所 · 碩士學位口試</div>
+      <h1 class="r">身體作為訊息的<br>物質前提</h1>
+      <div class="hero-beam"></div>
+      <div class="en r">The Body as the Material Precondition of the Message</div>
+      <div class="meta r">邊界 · 介面 · 路徑的創作研究</div>
+      <div class="meta r" style="margin-top:2rem;color:var(--faint)">陳羿言　指導教授　蔡遵弘　／　2026.07</div>
+    </div>
+  </section>
+
+  <!-- 01 HOOK -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="chapter r"><span class="num">01</span>　問題意識</div>
+      <h2 class="r">訊息，看起來像是<br>「自然存在」的東西。</h2>
+      <div class="lead r" style="margin-top:2.2rem">直到它<span class="accent">失效</span>的那一刻。</div>
+      <p class="body r" style="margin-top:1.8rem">訊號中斷、聲音消失——我們才意識到，剛剛那則訊息，一直依賴一整套可以被中斷的物質系統。</p>
+    </div>
+  </section>
+
+  <!-- 02 THESIS -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="two-col r">
+        <div class="tc-left">
+          <div class="chapter"><span class="num">02</span>　核心命題</div>
+          <h2>邊界、介面與路徑</h2>
+          <p class="cite">訊息的傳遞依賴一系列物質條件，這些條件在當代通訊技術中通常是隱形的。這個觀察建立在三個既有論點上。</p>
+        </div>
+        <div class="tc-right">
+          <ul class="cite-list">
+            <li>媒介的物理特性決定訊息的形式　<span class="src">Kittler, 1986</span></li>
+            <li>介面的悖論：越成功越退向背景，卻從未真正消失　<span class="src">Galloway, 2012</span></li>
+            <li>失效是物質性浮現的時刻　<span class="src">Virilio, 2005</span></li>
+          </ul>
+          <p class="cite">本研究在此基礎上，把訊息的傳遞過程拆解為邊界、介面、路徑三個物質環節——各自對應一件作品。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 THREE AXES -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="chapter r"><span class="num">03</span>　三軸對應作品</div>
+      <div class="map r">
+        <div class="map-row">
+          <div class="map-axis">邊界<small>boundary</small></div>
+          <div class="map-arrow">→</div>
+          <div class="map-body">
+            <div class="map-work">Solitude Internet</div>
+            <div class="map-pt">把演算法的「過濾邊界」物質化——觀眾須以視線對準裝置孔洞，被過濾的影像才會出現。</div>
+          </div>
+        </div>
+        <div class="map-row">
+          <div class="map-axis">介面<small>interface</small></div>
+          <div class="map-arrow">→</div>
+          <div class="map-body">
+            <div class="map-work">紙殼迴聲</div>
+            <div class="map-pt">把聲音傳導的「介面」物質化——觀眾以頭部接觸紙板，聲音成為可被觸覺感受的振動。</div>
+          </div>
+        </div>
+        <div class="map-row">
+          <div class="map-axis">路徑<small>pathway</small></div>
+          <div class="map-arrow">→</div>
+          <div class="map-body">
+            <div class="map-work">Beacon Silence</div>
+            <div class="map-pt">把訊號傳遞的「路徑」物質化——身體進入 Li-Fi 光束，在場與否直接決定訊號能否通過。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 QUESTIONS -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="two-col r">
+        <div class="tc-left">
+          <div class="chapter"><span class="num">04</span>　研究問題</div>
+          <ul class="cite-list" style="margin-top:.3rem">
+            <li>物質前提如何透過創作被感知？</li>
+            <li>觀眾身體如何成為物質前提的構成要素？　<span class="src">核心</span></li>
+            <li>失效如何作為物質前提的揭露時刻？</li>
+          </ul>
+          <p class="cite">三件作品各自處理一個面向；核心創作《Beacon Silence》落在三者的交集——邊界、介面、路徑在身體上匯聚為一個物理事實。</p>
+        </div>
+        <div class="tc-right">
+      <svg class="venn" viewBox="0 0 560 560" role="img" aria-label="邊界、介面、路徑三個物質前提的范氏圖；三者交集為身體，對應核心創作 Beacon Silence">
+        <circle cx="280" cy="205" r="170" fill="rgba(255,255,255,.045)" stroke="rgba(255,255,255,.32)"/>
+        <circle cx="185" cy="350" r="170" fill="rgba(255,255,255,.045)" stroke="rgba(255,255,255,.32)"/>
+        <circle cx="375" cy="350" r="170" fill="rgba(255,255,255,.045)" stroke="rgba(255,255,255,.32)"/>
+        <text x="280" y="22" class="vn" text-anchor="middle">邊界</text>
+        <text x="52" y="550" class="vn" text-anchor="middle">介面</text>
+        <text x="508" y="550" class="vn" text-anchor="middle">路徑</text>
+        <circle cx="280" cy="112" r="4" fill="#fff"/>
+        <text x="280" y="142" class="vw" text-anchor="middle">Solitude Internet</text>
+        <text x="280" y="162" class="vs" text-anchor="middle">邊界 · 感知者</text>
+        <circle cx="140" cy="360" r="4" fill="#fff"/>
+        <text x="140" y="390" class="vw" text-anchor="middle">紙殼迴聲</text>
+        <text x="140" y="410" class="vs" text-anchor="middle">介面 · 參與者</text>
+        <text x="280" y="276" class="vc" text-anchor="middle">身體</text>
+        <circle cx="280" cy="296" r="5" fill="#fff"/>
+        <text x="280" y="330" class="vw" text-anchor="middle">Beacon Silence</text>
+        <text x="280" y="351" class="vs" text-anchor="middle">三軸匯聚 · 構成者</text>
+      </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FRAMEWORK -->
+  <section class="slide" id="framework">
+    <div class="wrap">
+      <div class="chapter r">研究架構</div>
+      <div class="fw r">
+        <div class="fw-layer">
+          <span class="fw-tag">理論基礎</span>
+          <div class="fw-row">
+            <div class="fw-box" data-note="Friedrich Kittler（1986）：媒介的物理特性決定訊息能採取的形式。訊息不是獨立於媒介的抽象內容，而是物質條件允許的產物。">Kittler<small>媒介物質性</small></div>
+            <div class="fw-box" data-note="Virilio（2005）：每項技術同時發明了它自己的事故，失效內在於技術。Voegelin：寂靜使聲音的缺席成為可被感知的對象。">Virilio · Voegelin<small>事故與失效</small></div>
+            <div class="fw-box" data-note="Galloway（2012）介面悖論：介面越成功運作越退向背景，卻從未真正消失，只在失效時重新浮現。Sterne（2003）：轉換裝置不是中性、透明的管道，會以自身物質特性塑造訊號。">Galloway · Sterne<small>介面與轉換</small></div>
+            <div class="fw-box" data-note="Latour 行動者網絡理論：物與人並置於同一網絡；身體作為不透明的行動者，參與構成而不只是觀察。">Latour<small>行動者網絡</small></div>
+          </div>
+        </div>
+        <div class="fw-arrow">↓</div>
+        <div class="fw-layer">
+          <span class="fw-tag">核心概念 · 研究三問</span>
+          <div class="fw-row two">
+            <div class="fw-box" data-note="訊息傳遞的三個物質環節——邊界（決策點）、介面（轉換）、路徑（軌跡）；身體則是與裝置並列的第四個物質環節。">邊界 · 介面 · 路徑 · 身體<small>訊息傳遞的物質前提</small></div>
+            <div class="fw-box" data-note="① 物質前提如何被感知　② 觀眾身體如何成為構成要素（核心問題）　③ 失效如何作為物質前提的揭露時刻。">研究三問<small>如何被感知 · 如何構成 · 如何揭露</small></div>
+          </div>
+        </div>
+        <div class="fw-arrow">↓</div>
+        <div class="fw-layer">
+          <span class="fw-tag">方法論 · 創作實踐作為研究</span>
+          <div class="fw-row">
+            <div class="fw-box" data-note="透過三件作品的設計、製作與展示，把抽象的理論問題轉化為具體的物質形式。">創作實踐</div>
+            <div class="fw-box" data-note="以電路圖、訊號流程圖等技術圖說，拆解每件作品的硬體組成與訊號流向。">技術分析</div>
+            <div class="fw-box" data-note="於展演現場記錄觀眾的身體位置、移動軌跡，以及與作品發生關係的方式。">展演觀察</div>
+            <div class="fw-box" data-note="梳理三件作品之間的發展關係：各自處理了什麼、留下什麼未解，又如何引導下一件。">創作回顧</div>
+          </div>
+        </div>
+        <div class="fw-arrow">↓</div>
+        <div class="fw-layer">
+          <span class="fw-tag">創作實踐 · 遞進</span>
+          <div class="fw-row three">
+            <div class="fw-box" data-note="2024。把演算法的過濾邊界物質化；觀眾為感知者，配合既有物理條件去看見。">Solitude Internet<small>2024 · 邊界 · 感知者</small></div>
+            <div class="fw-box" data-note="2025。把聲音傳導的介面觸覺化；觀眾為參與者，身體跨進物質運作的內部。">紙殼迴聲<small>2025 · 介面 · 參與者</small></div>
+            <div class="fw-box core" data-note="2026，核心創作。以 Li-Fi 光束把訊號路徑物質化；觀眾為構成者，身體在場直接決定訊號能否傳遞。">Beacon Silence<small>2026 · 路徑 · 構成者</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="fw-note"></div>
+  </section>
+
+  <!-- 06 PRELIM CHAPTER -->
+  <section class="slide" id="dark-card">
+    <div class="wrap" style="text-align:center">
+      <div class="chapter r" style="justify-self:center"><span class="num">前期創作</span></div>
+      <h1 class="r">物質條件的<br>兩種操作</h1>
+    </div>
+  </section>
+
+  <!-- 07 SOLITUDE -->
+  <section class="slide" id="solitude">
+    <video id="sol-video" class="slide-video" src="video/solitude.mp4" poster="img/07.jpg" muted playsinline preload="metadata"></video>
+    <div class="sol-endimg" id="sol-endimg"></div>
+    <div class="slide-video-overlay"></div>
+    <div class="sol-black" id="sol-black"></div>
+    <div class="wrap">
+      <div class="chapter r">作品一 · 邊界的物質化</div>
+      <h2 class="r work">Solitude Internet<span style="font-family:var(--sans);font-style:normal;color:var(--faint);font-size:.5em">　2024</span></h2>
+      <p class="body r" style="margin-top:1.6rem">演算法原本不可見的「過濾邊界」，被轉化為觀眾必須移動身體、對準視線才能穿越的<span class="accent">光學事件</span>。</p>
+      <div class="lead r" style="margin-top:1.8rem">觀眾＝<span class="dim">感知者</span></div>
+    </div>
+  </section>
+
+  <!-- 07b SOLITUDE 2.0 -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="chapter r">作品一 · 2.0 版</div>
+      <h2 class="r work">Solitude Internet 2.0</h2>
+      <div class="gal2 r">
+        <img src="img/si2-1.jpg" alt="Solitude Internet 2.0 華山預展">
+        <img src="img/si2-2.jpg" alt="Solitude Internet 2.0 華山預展">
+      </div>
+      <p class="cite r">2.0 版把木盒改為壓克力結構，讓馬達、濾光片與連桿等機械部件透明可見——裝置的物質前提，從被包覆的內部，轉為可被直接看見的展示對象。（2024・華山預展 → 波蘭 Rondo Sztuki 藝術中心）</p>
+    </div>
+  </section>
+
+  <!-- 08 PAPER SHELL -->
+  <section class="slide" id="papershell">
+    <video id="ps-video" class="slide-video" src="video/papershell.mp4" poster="img/08-vposter.jpg" muted playsinline preload="metadata"></video>
+    <div class="ps-endimg" id="ps-endimg"></div>
+    <div class="slide-video-overlay"></div>
+    <div class="sol-black" id="ps-black"></div>
+    <div class="wrap">
+      <div class="chapter r">作品二 · 介面的觸覺化</div>
+      <h2 class="r">紙殼迴聲<span style="font-family:var(--sans);color:var(--faint);font-size:.5em">　2025</span></h2>
+      <p class="body r" style="margin-top:1.6rem">聲音傳導的「介面」，從聽覺通道轉向觸覺——成為可被身體直接接觸的<span class="accent">物理振動</span>。</p>
+      <div class="lead r" style="margin-top:1.8rem">觀眾＝<span class="dim">參與者</span></div>
+      <div class="r" style="display:flex;gap:12px;margin-top:1.5rem;align-items:flex-end;flex-wrap:wrap">
+        <img src="img/ps-vr.jpg" alt="觀眾戴 VR 頭盔躺入紙箱結構" style="height:min(24vh,205px);border-radius:8px;border:.5px solid rgba(255,255,255,.14)">
+        <img src="img/ps-dev.jpg" alt="紙殼迴聲開發現場" style="height:min(24vh,205px);border-radius:8px;border:.5px solid rgba(255,255,255,.14)">
+        <video src="video/ps-test.mp4" muted loop playsinline autoplay style="height:min(24vh,205px);max-width:100%;border-radius:8px;border:.5px solid rgba(255,255,255,.14)"></video>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 TURN -->
+  <section class="slide" id="turn">
+    <div class="wrap">
+      <div class="two-col r">
+        <div class="tc-left">
+          <div class="chapter">兩件作品的共同侷限</div>
+          <h2>觀眾，始終停留在系統的<span class="dim">外部</span>。</h2>
+          <p class="body" style="margin-top:1.6rem">前兩件作品讓觀眾<span class="accent">感知</span>、<span class="accent">參與</span>了物質前提，但身體始終沒有真正影響訊息能否成立。</p>
+          <p class="body" style="margin-top:1rem">要讓身體成為訊息的<span class="accent">構成條件</span>，得處理最後、也最關鍵的面向——路徑。這就是核心創作《Beacon Silence》的起點。</p>
+        </div>
+        <div class="tc-right">
+      <svg class="posdia" viewBox="0 0 620 215" role="img" aria-label="觀眾相對於系統的位置：感知者在外部、參與者在邊界、構成者進入訊號路徑內部">
+        <text x="405" y="48" class="pt" text-anchor="middle">系統 · 訊息成立的物質條件</text>
+        <rect x="232" y="60" width="344" height="92" rx="8" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.22)"/>
+        <line x1="256" y1="106" x2="552" y2="106" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+        <text x="548" y="98" class="ps" text-anchor="end">訊號路徑</text>
+        <line x1="106" y1="106" x2="230" y2="106" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-dasharray="3 4"/>
+        <circle cx="96" cy="106" r="5" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="1.4"/>
+        <text x="96" y="148" class="pl" text-anchor="middle">感知者</text>
+        <text x="96" y="164" class="ps" text-anchor="middle">Solitude · 外部</text>
+        <circle cx="232" cy="106" r="5" fill="#0c0d0e" stroke="rgba(255,255,255,.85)" stroke-width="1.4"/>
+        <line x1="232" y1="152" x2="232" y2="176" stroke="rgba(255,255,255,.15)" stroke-dasharray="2 3"/>
+        <text x="232" y="190" class="pl" text-anchor="middle">參與者</text>
+        <text x="232" y="206" class="ps" text-anchor="middle">紙殼迴聲 · 邊界</text>
+        <circle cx="408" cy="106" r="6" fill="#fff"/>
+        <line x1="408" y1="152" x2="408" y2="176" stroke="rgba(255,255,255,.2)" stroke-dasharray="2 3"/>
+        <text x="408" y="190" class="pl" text-anchor="middle">構成者</text>
+        <text x="408" y="206" class="ps" text-anchor="middle">Beacon Silence · 路徑內</text>
+      </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 CORE CARD -->
+  <section class="slide end" style="justify-content:center">
+    <div class="wrap">
+      <div class="chapter r" style="justify-self:center">核心創作</div>
+      <h1 class="r work">Beacon Silence</h1>
+      <div class="hero-beam" style="margin-top:2.4rem"></div>
+      <div class="en r" style="margin-top:1.4rem">以 Li-Fi 光束路徑傳輸聲音的互動裝置　·　2026</div>
+    </div>
+  </section>
+
+  <!-- VA 現場實測 · 空間 -->
+  <section class="slide" id="va-space">
+    <img class="slide-photo" src="img/va-space.jpg" alt="Beacon Silence 現場測試 · 展場空間">
+    <div class="slide-video-overlay"></div>
+    <div class="wrap">
+      <div class="chapter r">現場實測 · 2026</div>
+      <h2 class="r work">Beacon Silence</h2>
+      <p class="body r" style="margin-top:1.4rem">一道道綠色雷射光束橫貫暗場——每一道光束各自傳送一個<span class="accent">聲部</span>；光束合在一起，才是完整的音樂。</p>
+    </div>
+  </section>
+
+  <!-- 11 LI-FI -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="two-col r">
+        <div class="tc-left">
+          <div class="chapter"><span class="num">05</span>　Li-Fi 視線原則</div>
+          <h2>用光傳訊，所以只能走<span class="accent">直線</span>。</h2>
+          <p class="cite">Li-Fi 把訊號編碼成光源亮度的高速明滅（快到肉眼看不出在閃）；接收端用太陽能板接收這些亮度變化，把光轉回電，再還原成聲音訊號。</p>
+          <p class="cite" style="margin-top:.9rem">正因為靠光、沿直線傳播，身體一擋住光束，訊號就中斷——這就是視線原則。</p>
+        </div>
+        <div class="tc-right">
+          <svg class="lifi-dia" viewBox="0 0 520 108" role="img" aria-label="Li-Fi 簡單示意：光源以亮度明滅攜帶資訊，光束傳到太陽能板">
+            <defs><marker id="la2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+            <rect x="16" y="42" width="74" height="34" rx="5" fill="none" stroke="rgba(255,255,255,.4)"/>
+            <text x="53" y="64" class="dl" text-anchor="middle">光源</text>
+            <rect x="428" y="42" width="92" height="34" rx="5" fill="none" stroke="rgba(255,255,255,.4)"/>
+            <text x="474" y="64" class="dl" text-anchor="middle">太陽能板</text>
+            <line x1="92" y1="59" x2="424" y2="59" stroke="rgba(238,238,238,.85)" stroke-width="2" marker-end="url(#la2)"/>
+            <text x="258" y="32" class="ds" text-anchor="middle">光束 · 亮度隨訊號明滅，攜帶資訊</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 SIGNAL CHAIN -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="chapter r"><span class="num">06</span>　技術架構</div>
+      <svg class="circuit r" viewBox="0 0 800 150" role="img" aria-label="技術架構電路示意：DFPlayer 經發射電路驅動綠色雷射，光束傳到太陽能板，經接收電路與 XY-C50H 擴大機輸出至喇叭，光點表示訊號流動方向">
+        <defs><marker id="ca" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+        <g fill="none" stroke="rgba(232,232,232,.8)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="14" y="46" width="92" height="36" rx="4"/>
+          <path d="M106 64 H122"/>
+          <rect x="122" y="40" width="152" height="48" rx="4" stroke-dasharray="4 4"/>
+          <path d="M274 64 H290"/>
+          <path d="M292 54 V74 L310 64 Z"/><path d="M310 54 V74"/><path d="M310 64 H330"/>
+          <path d="M308 50 L318 40" marker-end="url(#ca)"/><path d="M314 53 L324 43" marker-end="url(#ca)"/>
+          <path d="M338 58 H426" marker-end="url(#ca)"/>
+          <path d="M338 70 H426" marker-end="url(#ca)"/>
+          <rect x="430" y="48" width="72" height="32"/>
+          <path d="M430 48.5 V79.5" stroke="#ffffff" stroke-width="1.8"/>
+          <path d="M448 48 V80 M466 48 V80 M484 48 V80"/>
+          <path d="M432 31 L442 43" marker-end="url(#ca)"/><path d="M450 31 L460 43" marker-end="url(#ca)"/>
+          <path d="M502 64 H520"/>
+          <rect x="520" y="40" width="130" height="48" rx="4" stroke-dasharray="4 4"/>
+          <path d="M650 64 H662"/>
+          <rect x="662" y="46" width="88" height="36" rx="4"/>
+          <path d="M750 64 H762"/>
+          <path d="M762 56 H771 L782 47 V81 L771 72 H762 Z"/><path d="M787 57 Q792 64 787 71"/>
+        </g>
+        <text x="60" y="68" class="cl" text-anchor="middle">DFPlayer</text>
+        <text x="198" y="32" class="cs" text-anchor="middle">發射電路</text>
+        <text x="198" y="60" class="cs" text-anchor="middle">C 100µF · R 1kΩ</text>
+        <text x="198" y="77" class="cs" text-anchor="middle">TIP122 · RV1 偏壓</text>
+        <text x="311" y="104" class="cs" text-anchor="middle">綠色雷射 12V</text>
+        <text x="378" y="34" class="cs" text-anchor="middle">光束</text>
+        <text x="466" y="104" class="cs" text-anchor="middle">太陽能板</text>
+        <text x="585" y="32" class="cs" text-anchor="middle">接收電路</text>
+        <text x="585" y="60" class="cs" text-anchor="middle">TIP122 · R 1kΩ 集極</text>
+        <text x="585" y="77" class="cs" text-anchor="middle">C 100µF</text>
+        <text x="706" y="68" class="cl" text-anchor="middle">XY-C50H</text>
+        <text x="772" y="104" class="cs" text-anchor="middle">喇叭</text>
+        <g>
+          <circle r="8" fill="rgba(255,255,255,.22)"/><circle r="3.6" fill="#fff"/>
+          <animateMotion dur="5s" repeatCount="indefinite" path="M106 64 H762"/>
+          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.95;1" dur="5s" repeatCount="indefinite"/>
+        </g>
+      </svg>
+      <p class="cite r" style="max-width:none;white-space:nowrap">每一次轉換，訊息都換一種物質形式：電 → 光 → 電 → 聲。光點代表訊號流動的方向。</p>
+    </div>
+  </section>
+
+  <!-- VA 現場實測 · 佈局 -->
+  <section class="slide" id="va-layout">
+    <video src="video/va-motion.mp4" muted loop playsinline poster="img/va-body.jpg" style="position:absolute;top:0;right:0;width:50vw;height:100%;object-fit:cover;z-index:0"></video>
+    <div class="wrap" style="position:relative;z-index:1;margin:0;max-width:none">
+      <div style="width:min(44vw,660px)">
+        <div class="chapter r">技術架構 · 實拍</div>
+        <h2 class="r">多道平行的光束路徑</h2>
+        <video class="r" src="video/va-layout.mp4" muted loop playsinline poster="img/va-layout.jpg" style="width:100%;margin-top:1.4rem;border-radius:8px;border:.5px solid rgba(255,255,255,.14)"></video>
+        <p class="body r" style="margin-top:1.2rem">每一道光束都是一條獨立的訊號通道——一端發射、另一端以太陽能板接收；中間的空間，正是身體可以介入、決定訊號能否通過的地方。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 INTERACTIVE DEMO -->
+  <section class="slide" id="demo">
+    <div class="wrap">
+      <div class="chapter r">即時演示 · 七光束</div>
+      <div class="demo-bar r">
+        <button id="bs-add">＋ 增加觀眾</button>
+        <button id="bs-reset">↻ 重置</button>
+        <button id="bs-audio">♪ 開啟聲音</button>
+        <button id="bs-orig">▶ 原曲</button>
+        <span id="bs-status">7 / 7 聲道傳遞中</span>
+      </div>
+      <canvas id="bs-canvas" width="680" height="360" class="r"></canvas>
+      <div class="chrow r" id="bs-channels"></div>
+    </div>
+  </section>
+
+  <!-- 14 COLLECTIVE SILENCE -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="two-col r" style="grid-template-columns:1.15fr 1fr">
+        <div class="tc-left">
+          <div class="chapter">集體寂靜</div>
+          <h2>觀眾做的是加法，<br>作品回應的卻是<span class="dim">減法</span>。</h2>
+          <p class="body" style="margin-top:1.8rem">越多人想參與，被呈現的聲音就越少；當每一道光束都被身體遮蔽——聲景歸於<span class="accent">飽和的寂靜</span>。</p>
+          <div class="lead" style="margin-top:1.6rem">寂靜不是「空」，而是「滿」——缺席，反而成了<span class="accent">在場的證據</span>。</div>
+        </div>
+        <div class="tc-right">
+          <svg class="silence-dia" viewBox="0 0 480 300" role="img" aria-label="在場身體越多、聲量越低的反比關係：從聲音到寂靜">
+            <defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0.1"/>
+            </linearGradient></defs>
+            <line x1="70" y1="48" x2="70" y2="244" stroke="rgba(255,255,255,.22)" stroke-width="1" stroke-dasharray="3 4"/>
+            <line x1="70" y1="244" x2="440" y2="244" stroke="rgba(255,255,255,.22)" stroke-width="1" stroke-dasharray="3 4"/>
+            <line x1="250" y1="141" x2="250" y2="244" stroke="rgba(255,255,255,.1)" stroke-dasharray="2 4"/>
+            <line x1="430" y1="236" x2="430" y2="244" stroke="rgba(255,255,255,.1)" stroke-dasharray="2 4"/>
+            <path d="M70 60 C 200 72, 300 205, 430 236" fill="none" stroke="url(#cg)" stroke-width="1.6"/>
+            <circle cx="70" cy="60" r="4.5" fill="#ffffff"/>
+            <circle cx="250" cy="141" r="3.5" fill="#ffffff" fill-opacity="0.55"/>
+            <circle cx="430" cy="236" r="3" fill="#ffffff" fill-opacity="0.26"/>
+            <text x="84" y="56" class="sl">聲音</text>
+            <text x="424" y="228" class="sl" text-anchor="end" fill-opacity="0.6">寂靜</text>
+            <text x="70" y="262" class="ss" text-anchor="middle">0</text>
+            <text x="250" y="262" class="ss" text-anchor="middle">4</text>
+            <text x="430" y="262" class="ss" text-anchor="middle">7</text>
+            <text x="255" y="284" class="st" text-anchor="middle">在場身體（人）</text>
+            <text x="42" y="146" class="st" text-anchor="middle" transform="rotate(-90 42 146)">聲量</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VA 現場實測 · 身體 -->
+
+  <!-- 15 PROGRESSION -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="chapter r"><span class="num">07</span>　觀眾位置的遞進</div>
+      <div class="prog r anim">
+        <span class="step dim">感知者</span><span class="arr">→</span>
+        <span class="step dim">參與者</span><span class="arr">→</span>
+        <span class="step now">構成者</span>
+      </div>
+      <p class="body r" style="margin-top:2rem;max-width:none;white-space:nowrap">身體，從系統外部的「輸入」，成為訊息能否傳遞的<span class="accent">物理條件本身</span>。</p>
+    </div>
+  </section>
+
+  <!-- 16 FAILURE -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="two-col r">
+        <div class="tc-left">
+          <div class="chapter">失效美學</div>
+          <h2>失效，未必只是需要被克服的故障。</h2>
+          <p class="body" style="margin-top:1.6rem">它是物質前提揭露自身的時刻——是被刻意設計、可以反覆發生的<span class="accent">作品核心狀態</span>。</p>
+        </div>
+        <div class="tc-right">
+          <p class="cite">這個重新理解，建立在幾個既有論點上：</p>
+          <ul class="cite-list">
+            <li>失效內在於技術，與發明同時誕生　<span class="src">Virilio, 2005</span></li>
+            <li>寂靜使聲音的缺席成為可被感知的對象　<span class="src">Voegelin, 2010</span></li>
+          </ul>
+          <p class="cite" style="max-width:none;white-space:nowrap">本研究據此把失效從「偶發的事故」，轉為可被設計、持續發生的作品狀態。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17 TABLE -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="chapter r">三軸整合對照</div>
+      <table class="r">
+        <thead><tr><th></th><th>邊界</th><th>介面</th><th>路徑</th></tr></thead>
+        <tbody>
+          <tr><td>對應作品</td><td class="work">Solitude Internet</td><td>紙殼迴聲</td><td class="work">Beacon Silence</td></tr>
+          <tr><td>物質化對象</td><td>演算過濾邊界</td><td>聲音傳導介面</td><td>Li-Fi 光束路徑</td></tr>
+          <tr><td>觀眾位置</td><td>感知者</td><td>參與者</td><td class="accent">構成者</td></tr>
+          <tr><td>失效形式</td><td>視角偏離</td><td>頭部離開紙板</td><td>身體遮蔽光束</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 18 CONCLUSION -->
+  <section class="slide" id="conclusion">
+    <div class="wrap">
+      <div class="chapter r">結論</div>
+      <div class="band r">
+        <span class="axis"></span>
+        <img src="img/band1.jpg" alt=""><img src="img/band2.jpg" alt=""><img src="img/band3.jpg" alt=""><img src="img/band4.jpg" alt="">
+        <span class="lt">邊界 · 介面 · 路徑</span>
+        <span class="lb">失效作為方法</span>
+      </div>
+      <h2 class="r">工程使物質前提<span class="dim">隱形</span>；<br>本研究嘗試讓它在身體經驗中<span class="accent">重新被察覺</span>。</h2>
+    </div>
+  </section>
+
+  <!-- 19 END -->
+  <section class="slide end" style="justify-content:center">
+    <div class="wrap">
+      <h1 class="r">謝謝聆聽</h1>
+      <div class="hero-beam" style="margin-top:1.6rem"></div>
+      <div class="en r" style="margin-top:1.6rem">Questions &amp; Discussion</div>
+      <div class="meta r" style="margin-top:2.4rem;color:var(--faint)">陳羿言　·　身體作為訊息的物質前提　·　2026</div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...document.querySelectorAll('.slide')];
+  const dotsWrap=document.getElementById('dots');
+  const pbar=document.getElementById('pbar');
+  const pageno=document.getElementById('pageno');
+
+  slides.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.className='dot';b.setAttribute('aria-label','slide '+(i+1));
+    b.addEventListener('click',()=>s.scrollIntoView({behavior:'smooth'}));
+    dotsWrap.appendChild(b);
+  });
+  const dots=[...dotsWrap.children];
+
+  let current=0;
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('active');
+        current=slides.indexOf(e.target);
+        dots.forEach((d,i)=>d.classList.toggle('on',i===current));
+        pbar.style.width=((current)/(slides.length-1)*100)+'%';
+        pageno.textContent=String(current+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+      }
+    });
+  },{threshold:.55});
+  slides.forEach(s=>io.observe(s));
+
+  function go(dir){
+    const n=Math.max(0,Math.min(slides.length-1,current+dir));
+    slides[n].scrollIntoView({behavior:'smooth'});
+  }
+  window.addEventListener('keydown',e=>{
+    if(['ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(1);}
+    else if(['ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(-1);}
+    else if(e.key==='Home'){slides[0].scrollIntoView({behavior:'smooth'});}
+    else if(e.key==='End'){slides[slides.length-1].scrollIntoView({behavior:'smooth'});}
+    else if(e.key==='Escape'){document.body.classList.remove('in-deck');document.getElementById('hub').classList.remove('hidden');}
+  });
+
+  /* ---------- spherical overview hub ---------- */
+  const hub=document.getElementById('hub');
+  const sphereWrap=document.getElementById('sphere-wrap');
+  const sphere=document.getElementById('sphere');
+  const pop=document.getElementById('hub-pop');
+  const HUB=[
+    {t:'序',n:'身體作為訊息的物質前提',img:'img/00.jpg'},{t:'01',n:'問題意識',img:'img/01.jpg'},{t:'02',n:'核心命題',img:'img/02.jpg'},
+    {t:'03',n:'三軸對應作品',img:'img/03.jpg'},{t:'04',n:'研究問題',img:'img/04.jpg'},{t:'架構',n:'研究架構'},
+    {t:'前期',n:'物質條件的兩種操作',img:'img/06.jpg'},{t:'作品一',n:'Solitude Internet',img:'img/07.jpg'},{t:'作品一·2.0',n:'Solitude Internet 2.0',img:'img/si2-card.jpg'},{t:'作品二',n:'紙殼迴聲',img:'img/08.jpg'},
+    {t:'轉折',n:'觀眾仍在系統外部',img:'img/09.jpg'},{t:'核心',n:'Beacon Silence',img:'img/10.jpg'},{t:'實測',n:'現場實測 · 空間',img:'img/va-space.jpg'},{t:'05',n:'Li-Fi 視線原則',img:'img/11.jpg'},
+    {t:'06',n:'技術架構',img:'img/12.jpg'},{t:'佈局',n:'平行光束路徑',img:'img/va-layout.jpg'},{t:'演示',n:'七光束互動',img:'img/13.jpg'},{t:'集體',n:'集體寂靜',img:'img/14.jpg'},
+    {t:'07',n:'觀眾位置的遞進',img:'img/15.jpg'},{t:'失效',n:'失效美學',img:'img/16.jpg'},{t:'對照',n:'三軸整合對照',img:'img/17.jpg'},
+    {t:'結論',n:'結論',img:'img/18.jpg'},{t:'終',n:'謝謝聆聽 ／ Q&A',img:'img/19.jpg'}
+  ];
+  const cards=[],pts=[],cscale=[],Nc=HUB.length,TURNS=2.75;let hoverIdx=-1;
+  for(let i=0;i<Nc;i++){
+    const t=Nc>1?i/(Nc-1):0,y=1-2*t,rr=Math.sqrt(Math.max(0.0001,1-y*y)),th=t*Math.PI*2*TURNS;
+    pts.push({x:Math.cos(th)*rr,y:y,z:Math.sin(th)*rr});
+    const c=document.createElement('div');c.className='hub-card';
+    if(HUB[i].img)c.style.backgroundImage='url("'+HUB[i].img+'")';
+    const pg=String(i+1).padStart(2,'0');
+    c.innerHTML='<div class="cp">'+pg+'</div><div class="ct">'+HUB[i].t+'</div><div class="cn">'+HUB[i].n+'</div>';
+    sphere.appendChild(c);cards.push(c);cscale.push(1);
+    c.addEventListener('mouseenter',function(){hoverIdx=i;
+      pop.querySelector('.pimg').style.backgroundImage=c.style.backgroundImage||'none';
+      pop.querySelector('.pn').textContent=String(i+1).padStart(2,'0');
+      pop.querySelector('.pt').textContent=HUB[i].n;
+      pop.classList.add('show');});
+    c.addEventListener('mouseleave',function(){if(hoverIdx===i){hoverIdx=-1;pop.classList.remove('show');}});
+  }
+  let ry=0,rx=-0.18,lastX=null,lastY=null;
+  sphereWrap.addEventListener('contextmenu',e=>e.preventDefault());
+  sphereWrap.addEventListener('pointerdown',e=>{
+    if(e.button===2){e.preventDefault();lastX=e.clientX;lastY=e.clientY;try{sphereWrap.setPointerCapture(e.pointerId);}catch(_){}}});
+  sphereWrap.addEventListener('pointermove',e=>{
+    if((e.buttons&2)===0){lastX=null;return;}
+    if(lastX===null){lastX=e.clientX;lastY=e.clientY;return;}
+    const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;
+    ry+=dx*0.006;rx+=dy*0.006;rx=Math.max(-1.2,Math.min(1.2,rx));});
+  sphereWrap.addEventListener('pointerup',e=>{
+    if(e.button===2){lastX=null;return;}
+    if(e.button===0){const el=document.elementFromPoint(e.clientX,e.clientY);
+      const card=el&&el.closest&&el.closest('.hub-card');
+      if(card){const idx=cards.indexOf(card);if(idx>=0)select(idx);}}});
+  sphereWrap.addEventListener('pointercancel',()=>{lastX=null;});
+  function rotP(p){const cy=Math.cos(ry),sy=Math.sin(ry);
+    let x1=p.x*cy+p.z*sy,z1=-p.x*sy+p.z*cy,y1=p.y;
+    const cx=Math.cos(rx),sx=Math.sin(rx);
+    return{x:x1,y:y1*cx-z1*sx,z:y1*sx+z1*cx};}
+  function hubFrame(){
+    if(!hub.classList.contains('hidden')){
+      const R=sphereWrap.clientWidth*0.42;
+      for(let i=0;i<Nc;i++){const q=rotP(pts[i]),c=cards[i];
+        const tgt=(i===hoverIdx)?1.08:1;cscale[i]+=(tgt-cscale[i])*0.2;
+        c.style.transform='translate3d('+(q.x*R).toFixed(1)+'px,'+(q.y*R).toFixed(1)+'px,'+(q.z*R).toFixed(1)+'px) scale('+cscale[i].toFixed(3)+')';
+        c.style.opacity=(i===hoverIdx?1:(0.3+0.7*((q.z+1)/2))).toFixed(2);
+        c.style.zIndex=(i===hoverIdx?2000:Math.round((q.z+1)*500));
+        c.style.pointerEvents=q.z>-0.15?'auto':'none';}
+      if(hoverIdx>=0){var pr=cards[hoverIdx].getBoundingClientRect();
+        var cx=pr.left+pr.width/2,cy=pr.top+pr.height/2;
+        cx=Math.max(162,Math.min(window.innerWidth-162,cx));cy=Math.max(150,Math.min(window.innerHeight-150,cy));
+        pop.style.left=cx+'px';pop.style.top=cy+'px';}
+    }
+    requestAnimationFrame(hubFrame);
+  }
+  hubFrame();
+  const morph=document.getElementById('morph');
+  function select(k){
+    const r=cards[k].getBoundingClientRect();
+    morph.style.backgroundImage=cards[k].style.backgroundImage||'none';
+    morph.querySelector('.m-ct').textContent=HUB[k].t;
+    morph.querySelector('.m-cn').textContent=HUB[k].n;
+    morph.classList.remove('grow');morph.classList.add('show');
+    morph.style.transition='none';
+    morph.style.left=r.left+'px';morph.style.top=r.top+'px';
+    morph.style.width=r.width+'px';morph.style.height=r.height+'px';morph.style.borderRadius='7px';
+    void morph.offsetWidth;
+    morph.style.transition='left .62s var(--ease),top .62s var(--ease),width .62s var(--ease),height .62s var(--ease),border-radius .62s var(--ease)';
+    morph.style.left='0px';morph.style.top='0px';morph.style.width='100vw';morph.style.height='100vh';morph.style.borderRadius='0';
+    morph.classList.add('grow');
+    hub.classList.add('hidden');
+    setTimeout(()=>{
+      document.body.classList.add('in-deck');
+      slides[k].scrollIntoView({behavior:'auto'});
+      deck.classList.remove('enter');void deck.offsetWidth;deck.classList.add('enter');
+      morph.classList.remove('show','grow');
+    },640);
+  }
+  var numBuf='',numTimer=null;
+  function commitNum(){
+    var n=parseInt(numBuf,10);numBuf='';
+    if(!n||n<1||n>slides.length)return;
+    var k=n-1;
+    if(!hub.classList.contains('hidden'))select(k);
+    else slides[k].scrollIntoView({behavior:'auto'});
+  }
+  window.addEventListener('keydown',function(e){
+    if(e.key>='0'&&e.key<='9'){
+      numBuf+=e.key;var n=parseInt(numBuf,10);
+      if(numTimer)clearTimeout(numTimer);
+      if(numBuf.length>=2||n*10>slides.length)commitNum();
+      else numTimer=setTimeout(commitNum,600);
+    }else if(e.key==='Enter'&&numBuf){if(numTimer)clearTimeout(numTimer);commitNum();}
+  });
+
+  /* ---------- eight-beam interactive demo (3D orbit · Blender-style) ---------- */
+  const cv=document.getElementById('bs-canvas');
+  const ctx=cv.getContext('2d');
+  const W=680,H=360,N=7;
+  const _S=2;cv.width=W*_S;cv.height=H*_S;ctx.scale(_S,_S);
+  const freqs=[261.63,293.66,329.63,349.23,392.00,440.00,493.88,523.25];
+  const XMIN=-1.15,XMAX=1.15,ZMIN=-0.95,ZMAX=0.95,BODY=0.34,ENTRY=-1.15,BEAMY=0.04;
+  const zOf=i=>ZMIN+(ZMAX-ZMIN)*i/(N-1);
+  const zThresh=((ZMAX-ZMIN)/(N-1))*0.46;
+  let people=[];
+  const mk=(px,pz)=>({px,pz});
+  function reset(){people=[mk(0.15,(ZMIN+(ZMAX-ZMIN)*1.5/7)),mk(-0.35,(ZMIN+(ZMAX-ZMIN)*3.5/7)),mk(0.45,(ZMIN+(ZMAX-ZMIN)*5.5/7)),mk(-0.05,ENTRY)];}
+  reset();
+
+  let yaw=-0.6,pitch=0.78,radius=3.7;
+  const target={x:0,y:0.04,z:0},F=820;
+  let cam={},tick=0;
+  const particles=[];
+  for(let i=0;i<90;i++)particles.push({x:(Math.random()*2-1)*1.3,y:Math.random()*0.52,z:(Math.random()*2-1)*1.15,s:Math.random()});
+  const SPH=[];(function(){var n=52,ga=Math.PI*(3-Math.sqrt(5));for(var i=0;i<n;i++){var y=1-2*(i+0.5)/n,rr=Math.sqrt(Math.max(0,1-y*y)),th=i*ga;SPH.push([Math.cos(th)*rr,y,Math.sin(th)*rr]);}})();
+  const CUBP=[];(function(){var V=[];for(var a=-1;a<=1;a+=2)for(var b=-1;b<=1;b+=2)for(var c=-1;c<=1;c+=2)V.push([a,b,c]);
+    var E=[[0,1],[1,3],[3,2],[2,0],[4,5],[5,7],[7,6],[6,4],[0,4],[1,5],[2,6],[3,7]];
+    E.forEach(function(e){var p=V[e[0]],q=V[e[1]];for(var t=0;t<=1.001;t+=0.34)CUBP.push([p[0]+(q[0]-p[0])*t,p[1]+(q[1]-p[1])*t,p[2]+(q[2]-p[2])*t]);});})();
+  function computeCam(){
+    const cx=target.x+radius*Math.cos(pitch)*Math.sin(yaw),
+          cy=target.y+radius*Math.sin(pitch),
+          cz=target.z+radius*Math.cos(pitch)*Math.cos(yaw);
+    let fx=target.x-cx,fy=target.y-cy,fz=target.z-cz,fl=Math.hypot(fx,fy,fz);fx/=fl;fy/=fl;fz/=fl;
+    let rx=-fz,rz=fx,rl=Math.hypot(rx,rz);rx/=rl;rz/=rl;
+    const ux=-rz*fy,uy=rz*fx-rx*fz,uz=rx*fy;
+    cam={px:cx,py:cy,pz:cz,fx,fy,fz,rx,ry:0,rz,ux,uy,uz};
+  }
+  function project(x,y,z){
+    const dx=x-cam.px,dy=y-cam.py,dz=z-cam.pz;
+    const cz=dx*cam.fx+dy*cam.fy+dz*cam.fz;if(cz<=0.05)return null;
+    return {x:W/2+((dx*cam.rx+dy*cam.ry+dz*cam.rz)/cz)*F,y:H/2-((dx*cam.ux+dy*cam.uy+dz*cam.uz)/cz)*F,d:cz};
+  }
+  function floorHit(sx,sy){
+    const a=(sx-W/2)/F,b=-(sy-H/2)/F;
+    const dx=a*cam.rx+b*cam.ux+cam.fx,dy=a*cam.ry+b*cam.uy+cam.fy,dz=a*cam.rz+b*cam.uz+cam.fz;
+    if(Math.abs(dy)<1e-4)return null;const t=-cam.py/dy;if(t<=0)return null;
+    return {x:cam.px+t*dx,z:cam.pz+t*dz};
+  }
+  const BOXE=[[0,1],[1,3],[3,2],[2,0],[4,5],[5,7],[7,6],[6,4],[0,4],[1,5],[2,6],[3,7]];
+  function drawWireBox(cx,cy,cz,s,col){
+    const c=[];for(const sx of[-1,1])for(const sy of[-1,1])for(const sz of[-1,1])c.push(project(cx+sx*s,cy+sy*s,cz+sz*s));
+    ctx.strokeStyle=col;ctx.lineWidth=1;
+    for(const e of BOXE){const a=c[e[0]],b=c[e[1]];if(a&&b){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}
+  }
+  function pCube(cx,cy,cz,s,al){
+    for(var i=0;i<CUBP.length;i++){var c=CUBP[i],pr=project(cx+c[0]*s,cy+c[1]*s,cz+c[2]*s);if(!pr)continue;
+      ctx.fillStyle='rgba(255,255,255,'+al+')';ctx.fillRect(pr.x-0.7,pr.y-0.7,1.4,1.4);}
+  }
+  function pSphere(cx,cy,cz,R,bright){
+    var br=R*(1+0.06*Math.sin(tick*0.09));
+    for(var i=0;i<SPH.length;i++){var s=SPH[i],pr=project(cx+s[0]*br,cy+s[1]*br,cz+s[2]*br);if(!pr)continue;
+      var tw=0.62+0.38*Math.sin(tick*0.08+i*1.3),a=(bright?0.9:0.62)*tw;
+      ctx.fillStyle='rgba(255,255,255,'+a.toFixed(3)+')';ctx.fillRect(pr.x-0.85,pr.y-0.85,1.7,1.7);}
+  }
+  function hud(){
+    ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=1;const m=14,L=12;
+    ctx.beginPath();
+    ctx.moveTo(m,m+L);ctx.lineTo(m,m);ctx.lineTo(m+L,m);
+    ctx.moveTo(W-m-L,m);ctx.lineTo(W-m,m);ctx.lineTo(W-m,m+L);
+    ctx.moveTo(m,H-m-L);ctx.lineTo(m,H-m);ctx.lineTo(m+L,H-m);
+    ctx.moveTo(W-m-L,H-m);ctx.lineTo(W-m,H-m);ctx.lineTo(W-m,H-m-L);ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,.13)';
+    const ps=[[W*0.5,15],[W*0.5,H-15],[W*0.22,H*0.28],[W*0.8,H*0.72]];
+    for(const q of ps){ctx.beginPath();ctx.moveTo(q[0]-4,q[1]);ctx.lineTo(q[0]+4,q[1]);ctx.moveTo(q[0],q[1]-4);ctx.lineTo(q[0],q[1]+4);ctx.stroke();}
+    ctx.fillStyle='rgba(255,255,255,.22)';ctx.font='300 9px "Jost","Noto Sans TC",sans-serif';
+    ctx.textAlign='left';ctx.fillText('LI-FI · 8CH',16,H-20);
+    ctx.textAlign='right';ctx.fillText('SYSTM 001.04',W-16,26);
+  }
+  const pos=e=>{const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*(W/r.width),y:(e.clientY-r.top)*(H/r.height)};};
+  let mode=null,dragIdx=-1,lx=0,ly=0;
+  cv.addEventListener('pointerdown',e=>{
+    computeCam();
+    if(e.button===1){e.preventDefault();mode='orbit';lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId);return;}
+    if(e.button===2){e.preventDefault();mode='pan';lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId);return;}
+    if(e.button===0){const p=pos(e),hit=floorHit(p.x,p.y);
+      if(hit){let best=-1,bd=0.24;
+        for(let i=0;i<people.length;i++){const dd=Math.hypot(people[i].px-hit.x,people[i].pz-hit.z);if(dd<bd){bd=dd;best=i;}}
+        if(best>=0){mode='drag';dragIdx=best;cv.setPointerCapture(e.pointerId);cv.style.cursor='grabbing';}}}
+  });
+  cv.addEventListener('pointermove',e=>{
+    if(mode==='orbit'){const dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;
+      yaw-=dx*0.008;pitch+=dy*0.008;pitch=Math.max(0.1,Math.min(1.45,pitch));return;}
+    if(mode==='pan'){const dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;computeCam();const sc=radius/F;
+      target.x+=(-dx*cam.rx+dy*cam.ux)*sc;target.y+=(-dx*cam.ry+dy*cam.uy)*sc;target.z+=(-dx*cam.rz+dy*cam.uz)*sc;return;}
+    if(mode==='drag'){computeCam();const p=pos(e),hit=floorHit(p.x,p.y);if(hit){const b=people[dragIdx];
+      b.px=Math.max(XMIN+0.03,Math.min(XMAX-0.03,hit.x));b.pz=Math.max(ENTRY,Math.min(ZMAX+0.05,hit.z));}}
+  });
+  const endP=()=>{mode=null;dragIdx=-1;cv.style.cursor='grab';};
+  cv.addEventListener('pointerup',endP);cv.addEventListener('pointercancel',endP);
+  cv.addEventListener('wheel',e=>{e.preventDefault();radius*=(1+e.deltaY*0.0012);radius=Math.max(1.8,Math.min(7,radius));},{passive:false});
+  cv.addEventListener('contextmenu',e=>e.preventDefault());
+
+  function breakerOf(i){const z=zOf(i);let m=null;for(const b of people){if(Math.abs(b.pz-z)<zThresh&&b.px>XMIN&&b.px<XMAX){if(m===null||b.px<m)m=b.px;}}return m;}
+
+  // 七聲道實際音檔（Beacon Silence stems）— 純 <audio> 控制 .volume，避免 file:// 下 Web Audio 的 CORS 靜音問題
+  let audioEls=[],audioReady=false,audioOn=false;const AUDIO_SET='src';// 8個獨立聲源:你的真實分軌按音色分成8組,各取最有料樂句循環,等響(-23dB)、連續、同調
+  function initAudio(){
+    for(let i=0;i<N;i++){const a=new Audio('audio/'+AUDIO_SET+'/ch'+(i+1)+'.mp3');
+      a.loop=true;a.preload='auto';a.volume=0;a.play().catch(()=>{});audioEls.push(a);}
+    audioReady=true;}
+  document.getElementById('bs-audio').addEventListener('click',function(){
+    if(!audioReady)initAudio();
+    audioOn=!audioOn;this.textContent=audioOn?'♪ 關閉聲音':'♪ 開啟聲音';
+    if(audioOn)audioEls.forEach(a=>{if(a.paused)a.play().catch(()=>{});});});
+  var origAudio=null;
+  document.getElementById('bs-orig').addEventListener('click',function(){
+    if(!origAudio){origAudio=new Audio('audio/original.mp3');origAudio.loop=true;}
+    if(origAudio.paused){origAudio.play().catch(()=>{});this.textContent='❚❚ 原曲';}
+    else{origAudio.pause();this.textContent='▶ 原曲';}});
+  document.getElementById('bs-add').addEventListener('click',()=>{const n=people.length;people.push(mk(-0.6+((n*0.43)%1.2),ENTRY));});
+  document.getElementById('bs-reset').addEventListener('click',reset);
+
+  const chWrap=document.getElementById('bs-channels');const chEls=[];
+  for(let i=0;i<N;i++){const d=document.createElement('div');d.className='ch';d.innerHTML='<b>'+(i+1)+'</b><span class="lab">傳遞</span>';chWrap.appendChild(d);chEls.push(d);}
+  const statusEl=document.getElementById('bs-status');
+
+  function frame(){
+    computeCam();
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#0c0d0e';ctx.fillRect(0,0,W,H);
+    const f00=project(XMIN,0,ZMIN),f10=project(XMAX,0,ZMIN),f11=project(XMAX,0,ZMAX),f01=project(XMIN,0,ZMAX);
+    if(f00&&f10&&f11&&f01){var ys=[f00.y,f10.y,f11.y,f01.y],miny=Math.min.apply(null,ys),maxy=Math.max.apply(null,ys);
+      var fg=ctx.createLinearGradient(0,miny,0,maxy);fg.addColorStop(0,'rgba(255,255,255,.012)');fg.addColorStop(1,'rgba(255,255,255,.07)');
+      ctx.fillStyle=fg;ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(f00.x,f00.y);ctx.lineTo(f10.x,f10.y);ctx.lineTo(f11.x,f11.y);ctx.lineTo(f01.x,f01.y);ctx.closePath();ctx.fill();ctx.stroke();}
+    tick++;
+    const brk=[];let blocked=0;
+    for(let i=0;i<N;i++){const m=breakerOf(i);brk[i]=m;if(m!==null)blocked++;
+      if(audioEls[i]){const a=audioEls[i],tgt=(audioOn&&m===null)?0.5:0;a.volume=Math.max(0,Math.min(1,a.volume+(tgt-a.volume)*0.16));}
+      const el=chEls[i];if(m!==null){el.style.background='transparent';el.style.color='var(--faint)';el.querySelector('.lab').textContent='中斷';}
+      else{el.style.background='rgba(255,255,255,.12)';el.style.color='var(--laser)';el.querySelector('.lab').textContent='傳遞';}}
+    const items=[];
+    for(let i=0;i<N;i++){const pm=project(0,0,zOf(i));items.push({d:pm?pm.d:999,t:'beam',i});}
+    for(const p of people){const pm=project(p.px,0,p.pz);items.push({d:pm?pm.d:999,t:'person',p});}
+    items.sort((a,b)=>b.d-a.d);
+    for(const it of items){
+      if(it.t==='beam'){const z=zOf(it.i),A=project(XMIN,BEAMY,z),B=project(XMAX,BEAMY,z);if(!A||!B)continue;const m=brk[it.i];
+        if(m!==null){const Bp=project(m,BEAMY,z);if(Bp){ctx.strokeStyle='rgba(232,232,232,.82)';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(Bp.x,Bp.y);ctx.stroke();
+          ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(Bp.x,Bp.y);ctx.lineTo(B.x,B.y);ctx.stroke();}}
+        else{ctx.strokeStyle='rgba(232,232,232,.82)';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke();}
+        ctx.fillStyle='rgba(235,235,235,.85)';ctx.fillRect(A.x-2.5,A.y-2.5,5,5);
+        ctx.fillStyle=m!==null?'rgba(255,255,255,.25)':'rgba(235,235,235,.85)';ctx.fillRect(B.x-2.5,B.y-2.5,5,5);
+      }else{const p=it.p,foot=project(p.px,0,p.pz);
+        let blk=false;for(let i=0;i<N;i++){if(Math.abs(p.pz-zOf(i))<zThresh){blk=true;break;}}
+        if(blk&&foot){ctx.strokeStyle='rgba(255,255,255,.26)';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(foot.x,foot.y,4,1.3,0,0,Math.PI*2);ctx.stroke();}
+        const cc=project(p.px,0.072,p.pz);if(cc){var r=Math.max(2,Math.min(5.5,110/cc.d));
+          var bg=ctx.createRadialGradient(cc.x,cc.y,0,cc.x,cc.y,r*2.6);
+          bg.addColorStop(0,'rgba(255,255,255,'+(blk?0.9:0.66)+')');bg.addColorStop(0.4,'rgba(255,255,255,'+(blk?0.4:0.24)+')');bg.addColorStop(1,'rgba(255,255,255,0)');
+          ctx.fillStyle=bg;ctx.beginPath();ctx.arc(cc.x,cc.y,r*2.6,0,Math.PI*2);ctx.fill();
+          ctx.fillStyle='rgba(255,255,255,'+(blk?1:0.9)+')';ctx.beginPath();ctx.arc(cc.x,cc.y,r,0,Math.PI*2);ctx.fill();}}
+    }
+    var isProj=document.body.classList.contains('proj');
+    ctx.fillStyle=isProj?'rgba(240,240,240,.95)':'rgba(150,150,150,.7)';ctx.font=(isProj?'400 12.5px':'300 11px')+' "Noto Sans TC",sans-serif';
+    const eL=project(XMIN,0,0),rL=project(XMAX,0,0),enL=project(0,0,ENTRY);
+    if(eL){ctx.textAlign='right';ctx.fillText('發射端',eL.x-6,eL.y);}
+    if(rL){ctx.textAlign='left';ctx.fillText('接收端 · 太陽能板',rL.x+6,rL.y);}
+    if(enL){ctx.textAlign='center';ctx.fillText('觀眾入口',enL.x,enL.y+14);}
+    if(blocked===N){ctx.fillStyle='rgba(12,13,14,.6)';ctx.fillRect(0,0,W,H);
+      ctx.textAlign='center';ctx.fillStyle='rgba(240,240,240,.95)';ctx.font='300 38px "Noto Sans TC",sans-serif';ctx.fillText('寂　靜',W/2,H/2-8);
+      ctx.font=(isProj?'400 14px':'300 13px')+' "Noto Sans TC",sans-serif';ctx.fillStyle=isProj?'rgba(235,235,235,.95)':'rgba(150,150,150,.85)';ctx.fillText('每一道光束都被在場的身體分別阻斷，聲景歸於飽和寂靜',W/2,H/2+18);}
+    statusEl.textContent=blocked===N?('寂靜：'+N+' 道光束全數中斷'):((N-blocked)+' / '+N+' 聲道傳遞中');
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
+<script>
+(function(){
+  var v=document.getElementById('sol-video');
+  if(!v)return;
+  var black=document.getElementById('sol-black');
+  var endimg=document.getElementById('sol-endimg');
+  var slide=document.getElementById('solitude');
+  var endTimer=null;
+  v.addEventListener('timeupdate',function(){ v.classList.toggle('color', v.currentTime>=32); });
+  v.addEventListener('ended',function(){
+    black.style.opacity='1';
+    endimg.style.opacity='1';
+    if(endTimer)clearTimeout(endTimer);
+    endTimer=setTimeout(function(){ black.style.opacity='0'; },3000);
+  });
+  function reset(){
+    if(endTimer){clearTimeout(endTimer);endTimer=null;}
+    v.classList.remove('color');
+    black.style.opacity='0';
+    endimg.style.opacity='0';
+    try{v.currentTime=0;}catch(e){}
+  }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){ reset(); var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
+      else { v.pause(); }
+    });
+  },{threshold:.6});
+  io.observe(slide);
+  window.addEventListener('keydown',function(e){
+    if((e.key==='r'||e.key==='R')&&slide.classList.contains('active')){ reset(); var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
+  });
+})();
+(function(){
+  var v=document.getElementById('ps-video'); if(!v)return;
+  var black=document.getElementById('ps-black');
+  var endimg=document.getElementById('ps-endimg');
+  var slide=document.getElementById('papershell');
+  var endTimer=null;
+  v.addEventListener('timeupdate',function(){ v.classList.toggle('color', v.currentTime>=15); });
+  v.addEventListener('ended',function(){
+    black.style.opacity='1'; endimg.style.opacity='1';
+    if(endTimer)clearTimeout(endTimer);
+    endTimer=setTimeout(function(){ black.style.opacity='0'; },3000);
+  });
+  function reset(){
+    if(endTimer){clearTimeout(endTimer);endTimer=null;}
+    v.classList.remove('color');
+    black.style.opacity='0'; endimg.style.opacity='0';
+    try{v.currentTime=0;}catch(e){}
+  }
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){reset();var p=v.play();if(p&&p.catch)p.catch(function(){});}
+    else{v.pause();}
+  });},{threshold:.6});
+  io.observe(slide);
+  window.addEventListener('keydown',function(e){
+    if((e.key==='r'||e.key==='R')&&slide.classList.contains('active')){ reset(); var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
+  });
+})();
+(function(){
+  // VA 現場影片：捲到該頁才播放（該頁全部影片一起播/暫停）
+  ['va-layout'].forEach(function(id){
+    var s=document.getElementById(id); if(!s)return;
+    var vids=[].slice.call(s.querySelectorAll('video')); if(!vids.length)return;
+    new IntersectionObserver(function(es){es.forEach(function(e){
+      vids.forEach(function(v){
+        if(e.isIntersecting){ try{v.currentTime=0;}catch(_){} var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
+        else v.pause();
+      });
+    });},{threshold:.5}).observe(s);
+  });
+})();
+(function(){
+  var bar=document.getElementById('scrub'),fill=document.getElementById('scrub-fill');
+  if(!bar)return;
+  var sol=document.getElementById('sol-video'),ps=document.getElementById('ps-video');
+  function actClass(id){var s=document.getElementById(id);return s&&s.classList.contains('active');}
+  function activeVid(){ if(actClass('solitude'))return sol; if(actClass('papershell'))return ps; return null; }
+  var shown=false;
+  window.addEventListener('keydown',function(e){
+    if(e.key==='s'||e.key==='S'){ if(!activeVid())return; shown=!shown; bar.classList.toggle('show',shown); }
+  });
+  function ovFor(v){ var p=(v===sol)?'sol':(v===ps)?'ps':null; if(!p)return[]; return [document.getElementById(p+'-black'),document.getElementById(p+'-endimg')]; }
+  function seek(x){
+    var v=activeVid(); if(!v)return;
+    var r=bar.getBoundingClientRect();
+    var t=Math.min(1,Math.max(0,(x-r.left)/r.width));
+    function apply(){
+      var d=v.duration; if(!d||!isFinite(d))return;
+      try{v.currentTime=t*d;}catch(_){}
+      ovFor(v).forEach(function(el){if(el)el.style.opacity='0';});
+      fill.style.width=(t*100).toFixed(1)+'%';
+      var p=v.play(); if(p&&p.catch)p.catch(function(){});
+    }
+    if(v.readyState>=1){apply();}
+    else{v.preload='auto';try{v.load();}catch(_){}
+      v.addEventListener('loadedmetadata',apply,{once:true});}
+  }
+  var dragging=false;
+  bar.addEventListener('pointerdown',function(e){dragging=true;try{bar.setPointerCapture(e.pointerId);}catch(_){}seek(e.clientX);});
+  bar.addEventListener('pointermove',function(e){if(dragging)seek(e.clientX);});
+  bar.addEventListener('pointerup',function(){dragging=false;});
+  (function loop(){ if(shown){var v=activeVid(); if(v&&v.duration)fill.style.width=(v.currentTime/v.duration*100).toFixed(1)+'%'; } requestAnimationFrame(loop); })();
+})();
+(function(){
+  var fw=document.getElementById('framework'); if(!fw)return;
+  var wrap=fw.querySelector('.wrap'), note=document.getElementById('fw-note');
+  var boxes=fw.querySelectorAll('.fw-box'), cur=null;
+  function hide(){cur=null;note.classList.remove('show');boxes.forEach(function(x){x.classList.remove('active');});}
+  boxes.forEach(function(b){
+    b.addEventListener('click',function(e){
+      e.preventDefault();e.stopPropagation();
+      if(cur===b){hide();return;}
+      boxes.forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');cur=b;
+      note.textContent=b.getAttribute('data-note')||'';
+      note.classList.add('show');
+    });
+  });
+  document.addEventListener('click',function(e){
+    if(cur && !e.target.closest('.fw-box') && !e.target.closest('#fw-note')) hide();
+  });
+})();
+</script>
+<script>
+/* ── 演講者模式：按 P 開啟。逐字稿全文＋當頁縮圖/標題直接取自簡報，雙向連動。 ── */
+(function(){
+  var NOTES=[
+`各位老師好，我是陳羿言，我的題目是《身體作為訊息的物質前提——邊界、介面與路徑的創作研究》，指導教授是蔡遵弘老師。
+
+這個題目聽起來有點抽象，所以我想先從我自己一次看展的經驗講起。`,
+`這次研究的起點，其實跟我某一次看展的經驗有關。
+
+那次在北美館，有一個展區剛好在維修，整個展間都被封住，外面放著「維修中」的牌子，什麼都看不到、也進不去。我站在那邊，反而滿好奇裡面到底是什麼樣的作品。
+
+我後來一直在想這件事。那個「維修中」的牌子，意思是「這裡現在不能看」；可是正因為它看不到，反而讓人更想知道裡面是什麼。這件作品在維修的狀態，本身好像也有值得被觀看的地方。
+
+這個想法後來慢慢變成我整個研究想探索的東西。而我這幾次做的一些作品，剛好也都跟失效有關，它們用的都是一些傳遞訊號的技術，平常運作的時候我們幾乎感覺不到，反而是失效的那一刻，斷線、沒聲音，那些平常看不見的東西才會浮出來。
+
+所以這幾件作品，大致上就是順著「與其把失效藏起來，不如讓它變成可以被看見、甚至被觀眾參與的一部分」的這個想法呈現出來。`,
+`那要怎麼處理這些看不見的東西呢？我的做法是把「物質前提」拆成三個比較好談的面向，也就是邊界、介面、路徑。
+
+邊界就是「什麼能通過、什麼被擋掉」，像演算法在決定你看得到什麼。介面是訊息換一種形式的地方，比如從電變成聲音。第三個是路徑，也就是訊息實際傳遞的那條通道。這三個面向，是我在這個研究裡提出來的一組區分，等一下的三件作品，都會跟這三個分類有所呼應。
+
+我會這樣拆，其實是想借用媒介理論家維希留的一個想法。他說，失效不是意外，而是技術本來就內建的。所以只要讓它失效，這些平常看不見的東西，就會自己冒出來。這就是我三件作品共同的做法。
+
+◇補充（不必唸）：投影片上另外兩位，被問到再展開——Kittler：用什麼傳，決定訊息長怎樣；處理物質載體＝處理訊息的根本。Galloway 介面悖論：介面越成功越退向背景、卻從未真正消失，失效時才浮現。三理論不是一對一對應三軸，是整體立場的支撐。`,
+`接下來，三件作品我先各用一句話介紹，讓大家有個輪廓。
+
+第一件是《Solitude Internet》，這件作品從一個大家都很熟的現象出發。網路每天都在幫我們過濾內容，決定我們看得到什麼、看不到什麼，但我們幾乎不會察覺。我把這個看不見的過濾變成一件事，你得移動身體、對準角度，才看得到被藏起來的畫面。這件作品對應的是「邊界」。
+
+第二件是《紙殼迴聲》，它處理的是我們聽聲音的方式。聲音本來是用耳朵聽的，我讓觀眾改用身體去接觸它，頭靠上紙板，聲音就變成摸得到的振動。它對應的是「介面」。
+
+第三件是核心作品《Beacon Silence》，它把聲音放進了光裡面。我用光來傳聲音，而光只走直線，所以身體一擋住它，聲音就斷了。它對應的是「路徑」。
+
+大家可以感覺到，這三件作品其實是一條線：從「看見」，到「摸到」，再到最後，用身體去決定訊息能不能成立。`,
+`這條線最後收成三個研究問題。
+
+第一個是，這些看不見的東西，要怎麼透過作品被感覺到？第二個，也是我最核心的問題，觀眾的身體，能不能從一個旁觀的人，變成決定訊息成不成立的一部分？第三個是，作品失效的那一刻，怎麼反而變成讓那些平常看不見的東西現身的關鍵？
+
+而我就是用三件作品去回答這三個問題的。它們跟邊界、介面、路徑的關係，可以看右邊這張圖。前面兩件作品，觀眾各自比較集中在一個面向，身體還在比較外圍的位置；到了《Beacon Silence》，邊界、介面、路徑這三個面向，最後都收攏到觀眾的身體上，在同一個點碰在一起。身體，也就從外圍走進了中心。`,
+`這一頁是整個研究的架構。
+
+最上層是理論基礎，主要圍繞媒介的物質性、失效，還有身體這幾個方向。這些概念往下，收斂成我的三個研究問題。
+
+而我回答這些問題的方式，是透過作品的設計、製作、展出，再回頭檢討去展開。最下層，就是三件作品從邊界、介面、到路徑的遞進。這邊是等一下報告的重點。`,
+`我先從兩件前期作品講起。這兩件，一件處理的是「邊界」，一件處理的是「介面」。`,
+`（影片播放）
+
+第一件，是 2024 年的《Solitude Internet》。這件作品的起點，是我對網路演算法的一個觀察。我們每天看到的網路內容，其實都被演算法篩選過，它默默決定什麼給你看、什麼不給你看，而這整個過程，我們平常完全察覺不到。
+
+觀眾走到作品前面，會看到兩片直立的投影幕，還有一個中間有孔洞的箱型裝置。投影幕上的影像是兩層疊在一起的，上面一層是綠色的雜訊，下面一層是紅色的人體影像。直接看的話，綠色雜訊會把紅色影像蓋住，只看得到一片綠色的干擾。
+
+關鍵在箱子的孔洞。孔洞後面裝了一片紅色濾光片，會把綠色的光濾掉、只留下紅色。所以觀眾要自己移動、把眼睛湊到孔洞前對準角度，透過濾光片看出去，綠色雜訊才會被濾掉，被蓋住的紅色人體影像才會浮現。而且這片濾光片還裝在馬達上會慢慢轉，轉動是由當天抓到的網路新聞情緒去驅動的，所以要看到完整的畫面，得一直跟著它調整位置。
+
+這件作品對應的是「邊界」。演算法決定什麼能通過、什麼被擋掉，這道界線本來藏在程式裡；我把它變成一片實體的濾光片，讓觀眾得用身體去對準，才能穿過。原本看不見的過濾，就變成一件觀眾要親自面對的事。`,
+`這件作品後來做了 2.0 版，2.0 最主要的改變，是我把原本的木盒外殼，換成了透明的壓克力，讓裡面的馬達、濾光片、連桿這些機械部件，全部直接露出來。
+
+這個改動對我來說其實滿關鍵的。原本的 1.0，木盒是密閉的，觀眾只看得到被過濾之後的結果，也就是那些浮現或消失的影像，但看不到過濾是怎麼發生的。2.0 把外殼變透明之後，連驅動這整個過濾的機械本身，也變成可以直接看的東西。
+
+換句話說，本來被藏在盒子裡、看不到的運作，現在被放到了檯面上。這其實跟作品的主題是呼應的。這件作品談的是演算法怎麼把自己藏起來、變得不透明；而在 2.0 裡，我讓作品自己的機制完全透明、攤在觀眾眼前，等於用作品的形式，回應了它想討論的問題。`,
+`（影片播放）
+
+第二件，是 2025 年的《紙殼迴聲》。
+
+先講它的來源。這件作品的影像，來自我參與 C-LAB 未來視覺實驗室的「穹頂工作坊」，那是一種本來要在大型圓頂空間裡觀看的沉浸式環景影像。我把這個原本屬於大空間的觀看經驗，縮小成個人的尺度：觀眾戴上 VR 頭盔、躺進一個紙箱結構裡，等於躺進一個自己的小穹頂。
+
+而聲音的部分，就是這件作品處理「介面」的地方。觀眾的頭貼著紙板，紙板裡裝了震動模組，會把聲音訊號變成震動，直接透過紙材傳到頭部，所以聲音不只是從耳朵進來，還變成身體可以感覺到的震動。VR 頭盔在這裡只負責影像，聲音的物質性，全部由這塊紙殼承擔。
+
+展出的時候有一個很有意思的現象，觀眾最常問的問題是「為什麼不用一般的音響就好？」。我覺得這個提問本身，就代表作品生效了。因為平常聽音樂的時候，沒有人會去問喇叭為什麼是喇叭；可是當觀眾開始追問「聲音到底是怎麼傳到我身上的」，就表示那個平常隱形的介面，已經浮出來、變成一個可以被指認、被討論的東西了。
+
+到了這件作品，觀眾不再只是站在旁邊觀看。他的身體實際貼上了紙板、直接接收聲音，位置也從「感知者」，往前推進到「參與者」。`,
+`不管是《Solitude Internet》還是《紙殼迴聲》，觀眾其實都還站在系統的外面。觀眾感覺到了那些物質條件，但他在不在場，並不會影響訊息的傳遞。就算觀眾離開了，作品還是照常運作，訊息也照常在傳。
+
+那要怎麼樣才能讓身體真正影響到訊息本身呢？這就要去處理最後、也是最難的那個面向，路徑。因為邊界跟介面，都發生在系統內部；只有路徑，是訊號實際穿越空間的那段通道，而身體本來就跟這段通道共處在同一個空間裡。也就是說，路徑是這三個面向裡面，身體最有可能真正介入的一個。
+
+這就是核心作品《Beacon Silence》的起點。`,
+`那就進入到剛剛現場看的作品。`,
+`這件作品呈現的是一個偏暗的空間，裡面有好幾道綠色的雷射光束，橫著穿過整個空間。每一道光束都各自傳送一段不同的聲音，好幾個喇叭，分別在播同一首曲子裡不同的聲部。這些光束合在一起，才是完整的音樂。`,
+`這件作品用的技術叫做 Li-Fi，它就是用光來傳聲音。做法是把聲音變成光的亮暗變化，讓光用非常快的速度閃爍，然後聲音訊號就藏在這些明暗變化裡；另一端再用太陽能板去接收光。太陽能板把光轉成電，讓它把接收到的光，還原成聲音訊號。
+
+Li-Fi 的訊號是集中在一條直線的光束上，身體一擋，聲音就立刻斷掉，沒有繞射、也沒有緩衝。
+
+這個特性，一般叫做「視線原則」。它最關鍵的地方在於，能傳送，就能被身體切斷，傳輸和中斷其實是同一件事的兩面。這樣身體只要在空間中介入，就能決定訊息成不成立。`,
+`這一頁是實際的電路。訊號從播放器出發，去驅動一個雷射；雷射的光打到對面的太陽能板，再經過電路跟擴大機，最後從喇叭出來。
+
+發射的時候，聲音會改變流過雷射的電流大小，雷射的光就跟著忽亮忽暗，聲音就這樣被寫進光裡面。到了接收端，光再被還原成電，變回聲音。
+
+在這整條路上，訊息一直在改變它的形態，從電，變成光，再變回電，最後變成聲音。畫面上那個移動的光點，就是訊號正在流動的方向。這一整條路徑，就是這件作品在處理的東西。
+
+◇補充（不必唸，被問電路細節時用）：發射端看「電流」——雷射多亮由電流決定，聲音去調變這個電流。接收端看「電壓」——太陽能板受光產生電流，集極那顆 1kΩ 電阻把電流轉成電壓，擴大機讀的是電壓。偏壓由 RV1（10kΩ 可變電阻）設定基礎亮度。`,
+`作品中光束一道一道平行排列，從空間的一側發射，到另一側接收。中間這塊區域，是留給觀眾走動的地方，也是整件作品互動發生的位置。
+
+有一部分的發射端被設計成裝在馬達軌道車上，雷射光會沿著軌道慢慢移動。所以就算展場裡一個觀眾都沒有，這些會動的光束，也會週期性地脫離接收端、造成聲音中斷。這麼做，是想讓「路徑是有物質的、會被切斷的」這件事，不是只在有人的時候才發生，而是在作品運作的整段時間裡，一直持續發生。`,
+`接下來，我用一個即時模擬來演示這件作品的核心互動。
+（按「開啟聲音」，開始操作）
+
+這是一個模擬的展場，總共七道光束，每一道各自傳一路聲音。我現在拖一個觀眾走進去，讓他擋住其中一道光——大家可以聽到，那一路的聲音當場就消失了。（示範遮一束）
+
+這裡有個細節：實際作品裡，光束設在腳踝的高度，彼此間隔七十公分，所以一個身體一次通常只會擋住一道光。這代表，要讓整個空間安靜下來，需要很多個身體同時在場。（陸續拖入多人）當每一道光束都被不同的身體擋住——整場，就歸於寂靜。`,
+`（放慢，多停留）
+
+很多人在場、聲音卻一個一個消失的狀態，是我整個研究裡最想談的一個時刻。我把它叫做「集體寂靜」。
+
+它之所以特別，是因為它顛倒了我們對「參與」的想像。很多時候觀眾越靠近、越投入，一件作品就越完整；但在這裡剛好相反，越多人想參與，被呈現出來的聲音就越少，到最後，滿滿的人反而換來整個空間的安靜。觀眾做的是加法，作品回應的卻是減法。
+
+可是這份安靜，不等於什麼都沒有。每一段消失的聲音，其實都指向一個正站在光束上的身體；整場的無聲，表示著全部在場的人。所以這裡的寂靜，不是「空」，而是「滿」，只是這個滿，是以聲音消失的方式被我們聽見。在這裡缺席反而成了觀眾在場的證據。
+
+等到人群散去、聲音回來，同樣的一場寂靜，就不會再現了。
+
+◇補充（不必唸）：被問理論淵源時——Voegelin（寂靜使聲音的缺席成為可被感知的對象）是參考起點；「共同構成、在場的證據、不可重現」是本研究自己的延伸主張。`,
+`把三件作品放在一起看，會看到一個很清楚的遞進，也就是觀眾的身體一步一步走進訊息內部。
+
+在《Solitude Internet》，觀眾站在裝置前面，移動身體、對準視線，去看見那些被演算法過濾掉的影像。他察覺到了背後的物質條件，但身體還在系統外面，是一個「感知者」。
+
+到了《紙殼迴聲》，觀眾把頭貼上紙板，用身體去接收聲音的振動。他不再只是看，而是實際接觸了作品，跨進了物質運作的內部，成為一個「參與者」。
+
+到了《Beacon Silence》，觀眾的身體直接站進光束路徑，他在不在場、站在哪裡，直接決定了訊號能不能傳過去。這時候，身體變成訊息能不能成立的那個關鍵，是一個「構成者」。
+
+觀眾的身體，就這樣從系統外面的旁觀者，一步一步變成了訊息能不能成立的物質條件。而「感知者、參與者、構成者」這條線，就串起了這三件作品的關係。
+
+◇補充（不必唸）：被問「構成者」的理論定位時——參考 Latour 行動者網絡理論：會改變結果的成員叫「中介者 mediator」、只被動傳遞的叫「傳遞者」；觀眾身體在此是中介者。此為參考框架，非本研究自創；原創主張在集體寂靜。`,
+`這一頁，我想談「失效」在這個研究裡的意義。
+
+在一般的認知裡，失效就是故障，是需要被修好、被排除的東西。但在我的作品裡，失效不是這樣。它反而是那些平常隱形的物質前提，現身的時刻。而且它不是偶然發生的意外，是我刻意設計、讓它反覆發生的核心狀態。
+
+這個想法，也有一些理論的支撐。維希留提醒我們，失效本來就內建在技術裡，跟發明是同時誕生的；沃格林則讓我看到，寂靜可以讓聲音的缺席，變成一個能被感知的對象。我把這些放在一起，想做的，就是把失效從一個偶然的事故，變成一個可以被設計、持續發生的作品狀態。`,
+`這張表，把三件作品並排做一次對照，橫的是三個面向，直的是四個維度。
+
+前兩列是基本對應，三件作品分別處理過濾的邊界、傳導的介面、還有光束的路徑。
+
+下面兩列則有清楚的變化。觀眾的位置，沿著感知者、參與者、構成者往下走；失效的形式，也從視角偏離、頭部離開紙板，變到身體遮住光束。這兩列並排看，其實是同一件事的兩面，觀眾越往訊息內部走，他造成的失效就越直接。到了《Beacon Silence》，兩者剛好合在一起，身體本身，就是那個造成失效的環節。`,
+`最後，我想回到最開始那個場景。
+
+當初我在北美館，看到一個展區被整個圍了起來，掛著「維修中」，裡面看不到、也進不去。我那時候想的是，一個空間被封起來、不讓人看的時候，為什麼反而更引人注意。走到這裡，我對這個疑問有了自己的回答。真正吸引我的，並不是它遮住了什麼，而是它讓「遮蔽」這件事本身變得可見。我們對訊息的傳遞太過熟悉、太過無感，而要讓那些平常看不見的物質條件重新現身，往往得先讓它中斷、被阻擋。
+
+在我的作品裡，執行這件事的，不再是圍欄或布幔，而是每一位觀眾的身體。當多個身體同時在場、各自阻斷不同的光束，那片「集體寂靜」，便是一群人共同完成了當年那個封閉空間所做的事。
+
+當代的工程，讓訊息的物質前提越來越隱形；而這整個研究，是想反過來，讓它們在身體的經驗裡重新被察覺。當初是一道圍籬，讓一個被忽略的空間被看見；而在這裡，是一群人的身體，讓一整片寂靜，成為可以被聽見、被意識到的存在。`,
+`以上是我的報告，謝謝各位老師。
+
+◇問答備援（不必唸）：
+◇為什麼一定要 Li-Fi？→ 因為要「身體能直接擋斷」。無線電波會繞射、會穿牆，身體擋不住；光走直線，一擋就斷。只有光能讓「在場」變成訊號的物理條件。
+◇跟一般互動藝術差在哪？→ 一般的互動：你的動作是「輸入」，你不動系統照跑。我的：身體是電路的一段，你不在場，訊號在物理上就不成立。
+◇「失效當方法」是不是把故障講好聽？→ 差別在「可設計、可重複、觀眾親手促成」。故障是偶發、要修的；我的斷是刻意的、每次都能發生、由身體促成。理論上有 Virilio（斷內建於技術）、Voegelin（缺席可被感知）支撐。
+◇三位理論家怎麼分工？→ Kittler＝地基（物質決定訊息）；Galloway＝為什麼看不見（介面悖論）；Virilio＝方法（讓它斷、它就現身）。不是硬對應三軸。
+◇集體寂靜是誰的觀點？→ 本研究自己提出的：寂靜作為所有在場身體共同構成、不可重現的物質事件。Voegelin 是它的參考起點（缺席可被感知），「共同構成／在場的紀錄／唯一性」是本研究的延伸。
+◇Latour 是你的觀點嗎？→ 不是，是參考。用他的「中介者／傳遞者」區分來定位身體的角色；原創部分在集體寂靜與失效作為方法的設計。
+◇觀眾不懂技術，作品還成立嗎？→ 成立。他一走進去、聲音就變，身體先於理解就發生了關係。技術說明是給想深入的人，不是門檻。
+◇為什麼七道不是八道？→ 現場依空間與器材調整為七道；概念不變：遮一道斷一路，全遮則全靜。數量是實作條件，不是概念核心。`];
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var ORIG=NOTES.slice();
+  try{for(var _k=0;_k<NOTES.length;_k++){var _ov=localStorage.getItem('bs_note_'+_k);if(_ov!==null)NOTES[_k]=_ov;}}catch(_){}
+  var BASE=location.href.replace(/[^\/]*$/,'');
+  function meta(i){
+    var s=slides[i];if(!s)return{ch:'',hd:''};
+    var ch=s.querySelector('.chapter'),hd=s.querySelector('h1,h2');
+    return {ch:ch?ch.textContent.replace(/\s+/g,' ').trim():'',
+            hd:hd?hd.textContent.replace(/\s+/g,' ').trim():''};
+  }
+  function thumb(i){
+    var c=document.querySelectorAll('.hub-card')[i];if(!c)return'';
+    var m=/url\("?([^")]+)"?\)/.exec(c.style.backgroundImage||'');
+    if(!m)return'';
+    return /^(https?|file):/.test(m[1])?m[1]:BASE+m[1];
+  }
+  var cur=0,pw=null;
+  function slideText(i){
+    var s=slides[i];if(!s)return'';
+    var parts=[],last='';
+    s.querySelectorAll('h1,h2,.lead,p,.cite-list li,.map-row,.prog,.q,tr').forEach(function(el){
+      var t=el.textContent.replace(/\s+/g,' ').trim();
+      if(t&&t!==last){parts.push(t);last=t;}
+    });
+    return parts.join('\n\n');
+  }
+  function payload(){
+    var m=meta(cur),hasN=cur+1<slides.length,n=hasN?meta(cur+1):{ch:'',hd:''};
+    return {type:'slide',i:cur,total:slides.length,ch:m.ch,hd:m.hd,img:thumb(cur),
+            nch:n.ch,nhd:n.hd,nimg:hasN?thumb(cur+1):'',note:NOTES[cur]||'',stext:slideText(cur)};
+  }
+  function send(){ if(pw&&!pw.closed){try{pw.postMessage(payload(),'*');}catch(_){}} }
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){cur=slides.indexOf(e.target);send();}
+  });},{threshold:.55});
+  slides.forEach(function(s){io.observe(s);});
+  window.addEventListener('message',function(e){
+    if(!e.data)return;
+    if(e.data.type==='nav'){
+      var hub=document.getElementById('hub');
+      if(hub&&!hub.classList.contains('hidden')){document.body.classList.add('in-deck');hub.classList.add('hidden');}
+      var k=Math.max(0,Math.min(slides.length-1,cur+e.data.d));
+      cur=k;slides[k].scrollIntoView({behavior:'auto'});send();
+    }else if(e.data.type==='ready'){send();}
+    else if(e.data.type==='goto'){
+      var g=Math.max(0,Math.min(slides.length-1,e.data.i|0));
+      var hub2=document.getElementById('hub');
+      if(hub2&&!hub2.classList.contains('hidden')){document.body.classList.add('in-deck');hub2.classList.add('hidden');}
+      cur=g;slides[g].scrollIntoView({behavior:'auto'});
+    }
+    else if(e.data.type==='noteEdit'){
+      var ii=e.data.i;
+      if(ii>=0&&ii<NOTES.length){NOTES[ii]=e.data.text;try{localStorage.setItem('bs_note_'+ii,e.data.text);}catch(_){}}
+    }else if(e.data.type==='noteReset'){
+      var ir=e.data.i;
+      if(ir>=0&&ir<NOTES.length){NOTES[ir]=ORIG[ir];try{localStorage.removeItem('bs_note_'+ir);}catch(_){}send();}
+    }else if(e.data.type==='noteResetAll'){
+      for(var q=0;q<NOTES.length;q++){NOTES[q]=ORIG[q];try{localStorage.removeItem('bs_note_'+q);}catch(_){}}
+      send();
+    }
+  });
+  window.addEventListener('keydown',function(e){
+    if((e.key==='p'||e.key==='P')&&!e.metaKey&&!e.ctrlKey){openP();}
+    else if((e.key==='b'||e.key==='B')&&!e.metaKey&&!e.ctrlKey){
+      document.body.classList.toggle('proj');
+      try{localStorage.setItem('bs_proj',document.body.classList.contains('proj')?'1':'0');}catch(_){}
+    }
+  });
+  try{if(localStorage.getItem('bs_proj')==='0')document.body.classList.remove('proj');}catch(_){}
+  function openP(){
+    if(pw&&!pw.closed){pw.focus();send();return;}
+    pw=window.open('','bs_presenter','width=1080,height=780');
+    if(!pw)return;
+    var html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>演講者模式 · 身體作為訊息的物質前提</title><style>'
+    +'*{box-sizing:border-box}body{margin:0;background:#0b0c0d;color:#e8e8e8;font-family:"Jost","Noto Sans TC",-apple-system,sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}'
+    +'#hdr{display:flex;gap:18px;padding:16px 22px 12px;border-bottom:1px solid rgba(255,255,255,.1);flex:none;align-items:center}'
+    +'#thumb{width:168px;height:100px;flex:none;border-radius:6px;border:1px solid rgba(255,255,255,.22);background:#161819 center/cover no-repeat;box-shadow:0 6px 22px rgba(0,0,0,.5)}'
+    +'#hmid{flex:1;min-width:0}'
+    +'#ch{font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;color:#8f8f8f;margin-bottom:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
+    +'#hd{font-family:"Noto Serif TC","Songti TC",serif;font-weight:400;font-size:23px;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}'
+    +'#hr{flex:none;text-align:right}'
+    +'#num{font-size:30px;font-weight:300;color:#fff;font-variant-numeric:tabular-nums}#num small{font-size:15px;color:#7d7d7d}'
+    +'#timer{font-size:24px;font-variant-numeric:tabular-nums;color:#9fd89f;cursor:pointer;user-select:none;margin-top:2px}#timer.paused{color:#d0a55c}'
+    +'#clock{font-size:12.5px;color:#787878;font-variant-numeric:tabular-nums;margin-top:2px}'
+    +'#dots{display:flex;gap:5px;padding:9px 22px;border-bottom:1px solid rgba(255,255,255,.08);flex:none}'
+    +'#dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.16);transition:.15s}#dots i.on{background:#fff;transform:scale(1.25)}#dots i.done{background:rgba(255,255,255,.42)}'
+    +'#note{flex:1;overflow-y:auto;padding:20px 26px;font-size:20px;line-height:1.9;white-space:pre-wrap;letter-spacing:.02em;font-family:"Noto Sans TC",sans-serif;font-weight:300;caret-color:#fff}'
+    +'#note:focus{outline:1px dashed rgba(255,255,255,.28);outline-offset:-6px}'
+    +'#note .act{color:#e8c37a}#note .sup{color:#7d887d;font-size:.82em}'
+    +'#bot{flex:none;display:flex;align-items:center;gap:14px;padding:11px 22px;border-top:1px solid rgba(255,255,255,.1);background:#101112}'
+    +'#nthumb{width:86px;height:52px;flex:none;border-radius:4px;border:1px solid rgba(255,255,255,.18);background:#161819 center/cover no-repeat}'
+    +'#nxt{flex:1;min-width:0}#nxt .k{font-size:10.5px;letter-spacing:.24em;color:#777;text-transform:uppercase;margin-bottom:3px}'
+    +'#nxt .t{font-size:14.5px;color:#d8d8d8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
+    +'button{background:#1b1d1f;color:#ddd;border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:9px 18px;font-size:15px;cursor:pointer;font-family:inherit}button:hover{border-color:#fff}'
+    +'#hint{color:#666;font-size:11.5px;text-align:right;line-height:1.5}'
+    +'</style></head><body>'
+    +'<div id="hdr"><div id="thumb"></div><div id="hmid"><div id="ch"></div><div id="hd"></div></div>'
+    +'<div id="hr"><div id="num"></div><div id="timer" title="點擊暫停/繼續，雙擊歸零">00:00</div><div id="clock"></div></div></div>'
+    +'<div id="dots"></div>'
+    +'<div id="note" contenteditable="true" spellcheck="false">（等待簡報同步…在簡報視窗捲動一下即可）</div>'
+    +'<div id="bot"><button id="prev">←</button><button id="nx">下一頁 →</button><button id="rst" title="單擊：還原此頁 · 雙擊：全部還原">還原此頁</button>'
+    +'<div id="nthumb"></div><div id="nxt"><div class="k">NEXT 下一頁</div><div class="t" id="ntxt">—</div></div>'
+    +'<div id="hint">←/→/空白鍵 翻頁（同步簡報）· 點稿子可直接編輯，自動儲存<br>點計時器暫停 · 雙擊歸零</div></div>'
+    +'<scr'+'ipt>'
+    +'var D=null;'
+    +'function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")}'
+    +'function fmt(s){return String(s).split("\\n").map(function(L){var e=esc(L);if(/^（/.test(L))return "<span class=act>"+e+"</span>";if(/^◇/.test(L))return "<span class=sup>"+e+"</span>";return e;}).join("\\n")}'
+    +'function render(){if(!D)return;'
+    +'document.getElementById("thumb").style.backgroundImage=D.img?"url(\\""+D.img+"\\")":"none";'
+    +'document.getElementById("ch").textContent=D.ch||("第 "+(D.i+1)+" 頁");'
+    +'document.getElementById("hd").textContent=D.hd||"";'
+    +'document.getElementById("num").innerHTML=String(D.i+1).padStart(2,"0")+"<small> / "+D.total+"</small>";'
+    +'var dw=document.getElementById("dots");if(dw.children.length!==D.total){dw.innerHTML="";for(var j=0;j<D.total;j++){dw.appendChild(document.createElement("i"))}}'
+    +'for(var j2=0;j2<dw.children.length;j2++){dw.children[j2].className=j2===D.i?"on":(j2<D.i?"done":"")}'
+    +'var nt=document.getElementById("note");nt.innerHTML=fmt(D.note||"（此頁無逐字稿）");nt.scrollTop=0;'
+    +'document.getElementById("nthumb").style.backgroundImage=D.nimg?"url(\\""+D.nimg+"\\")":"none";'
+    +'document.getElementById("ntxt").textContent=(D.i+1<D.total)?((D.nch?D.nch+"　":"")+(D.nhd||"")):"（最後一頁）";}'
+    +'window.addEventListener("message",function(e){if(e.data&&e.data.type==="slide"){D=e.data;render();}});'
+    +'function nav(d){if(window.opener&&!window.opener.closed)window.opener.postMessage({type:"nav",d:d},"*");}'
+    +'document.getElementById("prev").onclick=function(){nav(-1)};document.getElementById("nx").onclick=function(){nav(1)};'
+    +'var noteEl=document.getElementById("note"),svT=null;'
+    +'noteEl.addEventListener("input",function(){if(!D)return;clearTimeout(svT);svT=setTimeout(function(){if(window.opener&&!window.opener.closed)window.opener.postMessage({type:"noteEdit",i:D.i,text:noteEl.innerText},"*");},350);});'
+    +'document.getElementById("rst").onclick=function(){if(D&&window.opener&&!window.opener.closed)window.opener.postMessage({type:"noteReset",i:D.i},"*");};'
+    +'document.getElementById("rst").ondblclick=function(){if(window.opener&&!window.opener.closed&&confirm("清除所有頁面的手動編輯，全部還原為原稿？"))window.opener.postMessage({type:"noteResetAll"},"*");};'
+    +'window.addEventListener("keydown",function(e){if(document.activeElement&&document.activeElement.id==="note")return;if(e.key==="ArrowRight"||e.key===" "||e.key==="PageDown"){e.preventDefault();nav(1);}else if(e.key==="ArrowLeft"||e.key==="PageUp"){e.preventDefault();nav(-1);}});'
+    +'var t0=Date.now(),acc=0,run=true;'
+    +'function tick(){var el=document.getElementById("timer");var ms=run?acc+(Date.now()-t0):acc;var s=Math.floor(ms/1000);el.textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");el.className=run?"":"paused";'
+    +'var d=new Date();document.getElementById("clock").textContent=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");requestAnimationFrame(tick);}tick();'
+    +'document.getElementById("timer").addEventListener("click",function(){if(run){acc+=Date.now()-t0;run=false;}else{t0=Date.now();run=true;}});'
+    +'document.getElementById("timer").addEventListener("dblclick",function(){acc=0;t0=Date.now();run=true;});'
+    +'if(window.opener&&!window.opener.closed)window.opener.postMessage({type:"ready"},"*");'
+    +'<\/scr'+'ipt></body></html>';
+    pw.document.write(html);
+    pw.document.close();
+    setTimeout(send,250);
+  }
+})();
+</script>
+</body>
+</html>
