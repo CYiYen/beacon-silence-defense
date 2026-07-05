@@ -475,7 +475,7 @@
   #help .close:hover{color:#fff}
 </style>
 </head>
-<body class="proj">
+<body>
 
 
 
@@ -1646,7 +1646,7 @@ Li-Fi 的訊號是集中在一條直線的光束上，身體一擋，聲音就�
       try{localStorage.setItem('bs_proj',document.body.classList.contains('proj')?'1':'0');}catch(_){}
     }
   });
-  try{if(localStorage.getItem('bs_proj')==='0')document.body.classList.remove('proj');}catch(_){}
+  try{if(localStorage.getItem('bs_proj')==='1')document.body.classList.add('proj');}catch(_){}
   function openP(){
     if(pw&&!pw.closed){pw.focus();send();return;}
     pw=window.open('','bs_presenter','width=1080,height=780');
